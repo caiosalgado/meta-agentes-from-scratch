@@ -390,6 +390,8 @@ agente = LLM_Agent(
 # Testar o agente com o novo formato
 print("=== TESTANDO PROBLEMA: isPalindrome ===")
 palindrome_problem = problems[0]
+
+# %%
 result = agente.run_leetcode_test(palindrome_problem)
 
 print(f"\nProblema: {result['problem_title']} ({result['problem_id']})")

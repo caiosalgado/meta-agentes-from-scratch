@@ -98,7 +98,7 @@ class LLM_Agent:
         
         return system_prompt, user_prompt
     
-    def generate_response(self, task: str) -> str:
+    def generate_response(self, task: str) -> Dict[str, Any]:
         """
         Gera uma resposta usando o agente configurado.
         
@@ -106,7 +106,7 @@ class LLM_Agent:
             task: Descrição da tarefa a ser resolvida
             
         Returns:
-            str: Resposta do modelo
+            Dict[str, Any]: Resposta parseada como dicionário ou dicionário com erro
         """
         system_prompt, user_prompt = self.create_prompt(task)
         
@@ -121,7 +121,9 @@ class LLM_Agent:
             temperature=self.temperatura
         )
         
-        return response.choices[0].message.content
+        # Aplicar parse JSON automaticamente
+        raw_response = response.choices[0].message.content
+        return self.parse_json_response(raw_response)
     
     def parse_json_response(self, response: str) -> Dict[str, Any]:
         """
@@ -274,12 +276,12 @@ print(repr(result))
         accuracy = (correct_count / len(test_cases)) * 100 if test_cases else 0
         return accuracy, results
     
-    def evaluate_response(self, response: str, test_cases: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
+    def evaluate_response(self, response: Dict[str, Any], test_cases: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
         """
         Avalia a resposta do agente comparando valores esperados vs atuais.
         
         Args:
-            response: Resposta do modelo
+            response: Resposta do modelo já parseada como dicionário
             test_cases: Casos de teste opcionais para avaliar código
             
         Returns:
@@ -294,8 +296,8 @@ print(repr(result))
             'feedback': []
         }
         
-        # Parse da resposta JSON
-        parsed_response = self.parse_json_response(response)
+        # A resposta já vem parseada do generate_response
+        parsed_response = response
         evaluation['parsed_response'] = parsed_response
         
         if 'erro' in parsed_response:
@@ -354,7 +356,7 @@ print(repr(result))
         Returns:
             Dict[str, Any]: Resultado da avaliação
         """
-        # Gerar resposta para o problema
+        # Gerar resposta para o problema (já retorna dicionário parseado)
         task_str = self.load_leetcode_problem(problem_data)
         response = self.generate_response(task_str)
         
@@ -391,11 +393,12 @@ palindrome_problem = problems[0]
 result = agente.run_leetcode_test(palindrome_problem)
 
 print(f"\nProblema: {result['problem_title']} ({result['problem_id']})")
-print(f"Acurácia: {result['evaluation']['code_accuracy']:.1f}%")
+accuracy = result['evaluation']['code_accuracy'] or 0
+print(f"Acurácia: {accuracy:.1f}%")
 print(f"Feedback: {result['evaluation']['feedback']}")
 
 print("\n=== RESPOSTA COMPLETA ===")
-print(json.dumps(result['evaluation']['parsed_response'], indent=2, ensure_ascii=False))
+print(json.dumps(result['response'], indent=2, ensure_ascii=False))
 
 print("\n=== RESULTADOS DOS TESTES ===")
 for test_result in result['evaluation']['test_results']:

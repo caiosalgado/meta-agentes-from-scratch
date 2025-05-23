@@ -37,13 +37,9 @@ def prompt_meta_agente(
         "# Instrução do Output\n"
         "Responda EXCLUSIVAMENTE em formato JSON com esta estrutura exata:\n"
         "{{\n"
-        '  "thought": "Sua reflexão detalhada sobre o design do agente, incluindo: '
-        '             (1) Análise do problema, '
-        '             (2) Estratégia escolhida, '
-        '             (3) Justificativa da arquitetura, '
-        '             (4) Técnicas de prompt engineering aplicadas",\n'
-        '  "name": "Nome único e descritivo do agente",\n'
-        '  "code": "Função Python completa criar_agente() com implementação detalhada"\n'
+        '  "pensamento": "Seu pensamento sobre o design do agente",\n'
+        '  "name": "Nome do agente",\n'
+        '  "code": "Código para criar o agente"\n'
         "}}\n\n"
         "# Sua Tarefa Específica\n"
         "{task_explicacao}\n\n"

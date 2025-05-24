@@ -204,7 +204,19 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
         exemplos_funcionais = self.get_functional_examples()
         exemplos_nao_funcionais = self.get_non_functional_examples()
         
-        prompt = f"""Seu objetivo é criar PIPELINES INTELIGENTES de agentes que maximizem acurácia através de colaboração, especialização e raciocínio distribuído.
+        prompt = f"""Seu objetivo é criar PIPELINES INTELIGENTES de agentes que MAXIMIZEM A ACURÁCIA e MINIMIZEM O TEMPO DE EXECUÇÃO através de colaboração, especialização e raciocínio distribuído.
+
+Para melhorar a performance, você pode usar as seguintes técnicas:
+- Usar diferentes modelos para diferentes funções
+- Pipelines podem usar outputs anteriores via arquitetura_respostas_anteriores
+- Pense em especialização: cada agente tem função específica
+- Considere edge cases e robustez
+
+Para minimizar o tempo de execução, você pode usar as seguintes técnicas:
+- Usar modelos mais leves
+- Usar pipelines mais simples
+- Usar pipelines com menos agentes
+- Usar pipelines com menos iterações
 
 TÉCNICAS DISPONÍVEIS:
 - Single Agent: Um agente especializado

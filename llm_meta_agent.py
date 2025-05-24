@@ -15,6 +15,23 @@ from llm_agent import LLM_Agent
 
 
 class LLM_Meta_Agent:
+    """
+    Meta-agente que cria outros agentes LLM especializados.
+    
+    Aprende com histórico de performance e cria pipelines inteligentes
+    combinando múltiplos agentes para maximizar acurácia.
+    """
+    
+    # SYSTEM PROMPT ÚNICO - SOURCE OF TRUTH
+    SYSTEM_PROMPT = """Você é um especialista em engenharia de agentes de IA.
+
+RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
+{
+  "name": "Nome descritivo do pipeline",
+  "pensamento": "Por que esta arquitetura vai funcionar melhor...", 
+  "code": "Código Python executável que cria e orquestra os agentes"
+}"""
+
     def __init__(self, 
                  model: str = "ollama:qwen3:32b",
                  history_file: str = "agent_history.json",
@@ -187,9 +204,7 @@ class LLM_Meta_Agent:
         exemplos_funcionais = self.get_functional_examples()
         exemplos_nao_funcionais = self.get_non_functional_examples()
         
-        prompt = f"""Você é um especialista mundial em engenharia de agentes de IA multi-modais.
-
-Seu objetivo é criar PIPELINES INTELIGENTES de agentes que maximizem acurácia através de colaboração, especialização e raciocínio distribuído.
+        prompt = f"""Seu objetivo é criar PIPELINES INTELIGENTES de agentes que maximizem acurácia através de colaboração, especialização e raciocínio distribuído.
 
 TÉCNICAS DISPONÍVEIS:
 - Single Agent: Um agente especializado
@@ -222,7 +237,7 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
 
 DIRETRIZES IMPORTANTES:
 - Use diferentes modelos para diferentes funções
-- Varie temperaturas: baixa (0.1-0.3) para precisão, alta (0.7-0.9) para criatividade
+- Varie temperaturas: baixa (0.1-0.3) para precisão, media (0.4-0.6) para normalidade e alta (0.7-0.9) para criatividade
 - Pipelines podem usar outputs anteriores via arquitetura_respostas_anteriores
 - Pense em especialização: cada agente tem função específica
 - Considere edge cases e robustez
@@ -250,7 +265,7 @@ CRIE UM PIPELINE REVOLUCIONÁRIO!"""
         prompt = self._build_meta_prompt(task_explicacao)
         
         messages = [
-            {"role": "system", "content": "Você é um especialista em engenharia de agentes de IA."},
+            {"role": "system", "content": self.SYSTEM_PROMPT},
             {"role": "user", "content": prompt}
         ]
         

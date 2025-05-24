@@ -7,19 +7,6 @@ import tempfile
 import os
 import re
 
-# Carrega o JSON completo
-with open("leetcode_problems.json", encoding="utf-8") as f:
-    problems = json.load(f)["problems"]
-
-# Escolhe um problema (por índice ou id)
-problem = problems[0]   # por exemplo, o primeiro
-# Ou: problem = next(p for p in problems if p["id"] == "twoSum")
-
-# Converte o dicionário inteiro em string JSON indentada
-task_str = json.dumps(problem, indent=2, ensure_ascii=False)
-
-print(task_str)
-
 class LLM_Agent:
     def __init__(
         self,
@@ -371,72 +358,94 @@ print(repr(result))
             'evaluation': evaluation
         }
 
-# %%
-# Criar agente para resolver problemas de algoritmos
-agente = LLM_Agent(
-    role="Especialista em Algoritmos Python",
-    instruction="Implemente uma solução eficiente para o problema. Use apenas funções standalone (não classes).",
-    arquitetura_resposta={
-        "analysis": "Análise detalhada do problema",
-        "explanation": "Explicação da solução step-by-step",
-        "code": "Código Python completo - apenas função standalone",
-        "complexity": "Análise de complexidade temporal e espacial"
-    },
-    temperatura=0.3,
-    # model="ollama:qwen3:4b"
-    model="ollama:gemma3:4b"
-)
 
-# Testar o agente com o novo formato
-print("=== TESTANDO PROBLEMA: isPalindrome ===")
-palindrome_problem = problems[0]
 
 # %%
-result = agente.run_leetcode_test(palindrome_problem)
 
-print(f"\nProblema: {result['problem_title']} ({result['problem_id']})")
-accuracy = result['evaluation']['code_accuracy'] or 0
-print(f"Acurácia: {accuracy:.1f}%")
-print(f"Feedback: {result['evaluation']['feedback']}")
+if __name__ == "__main__":
+    # Carrega o JSON completo (só quando executar diretamente)
+    with open("leetcode_problems.json", encoding="utf-8") as f:
+        problems = json.load(f)["problems"]
 
-print("\n=== RESPOSTA COMPLETA ===")
-print(json.dumps(result['response'], indent=2, ensure_ascii=False))
+    # Todo o código de exemplo que estava solto:
+    agente = LLM_Agent(
+        role="Especialista em Algoritmos Python",
+        instruction="Implemente uma solução eficiente para o problema. Use apenas funções standalone (não classes).",
+        arquitetura_resposta={
+            "analysis": "Análise detalhada do problema",
+            "explanation": "Explicação da solução step-by-step", 
+            "code": "Código Python completo - apenas função standalone",
+            "complexity": "Análise de complexidade temporal e espacial"
+        },
+        temperatura=0.3,
+        model="ollama:gemma3:4b"
+    )
 
-print("\n=== RESULTADOS DOS TESTES ===")
-for test_result in result['evaluation']['test_results']:
-    status = "✅" if test_result['correct'] else "❌"
-    print(f"{status} Teste {test_result['test_case']}: input={test_result['input']}, expected={test_result['expected']}, actual={test_result['actual']}")
-    if test_result['error']:
-        print(f"   Erro: {test_result['error']}")
+    # Resto do código de teste...
+    # %%
+    # Criar agente para resolver problemas de algoritmos
+    agente = LLM_Agent(
+        role="Especialista em Algoritmos Python",
+        instruction="Implemente uma solução eficiente para o problema. Use apenas funções standalone (não classes).",
+        arquitetura_resposta={
+            "analysis": "Análise detalhada do problema",
+            "explanation": "Explicação da solução step-by-step",
+            "code": "Código Python completo - apenas função standalone",
+            "complexity": "Análise de complexidade temporal e espacial"
+        },
+        temperatura=0.3,
+        # model="ollama:qwen3:4b"
+        model="ollama:gemma3:4b"
+    )
 
-# %%
-# Testar todos os problemas
-print("\n" + "="*50)
-print("TESTANDO TODOS OS PROBLEMAS")
-print("="*50)
+    # Testar o agente com o novo formato
+    print("=== TESTANDO PROBLEMA: isPalindrome ===")
+    palindrome_problem = problems[0]
 
-all_results = []
-for problem in problems:
-    print(f"\n--- {problem['title']} ---")
-    result = agente.run_leetcode_test(problem)
-    all_results.append(result)
-    
+    # %%
+    result = agente.run_leetcode_test(palindrome_problem)
+
+    print(f"\nProblema: {result['problem_title']} ({result['problem_id']})")
     accuracy = result['evaluation']['code_accuracy'] or 0
     print(f"Acurácia: {accuracy:.1f}%")
-    correct_count = sum(1 for test in result['evaluation']['test_results'] if test['correct'])
-    total_count = len(result['evaluation']['test_results'])
-    print(f"Testes corretos: {correct_count}/{total_count}")
+    print(f"Feedback: {result['evaluation']['feedback']}")
 
-# Resumo final
-print(f"\n{'='*50}")
-print("RESUMO FINAL")
-print(f"{'='*50}")
-total_accuracy = sum(r['evaluation']['code_accuracy'] or 0 for r in all_results) / len(all_results)
-print(f"Acurácia média: {total_accuracy:.1f}%")
+    print("\n=== RESPOSTA COMPLETA ===")
+    print(json.dumps(result['response'], indent=2, ensure_ascii=False))
 
-for result in all_results:
-    accuracy = result['evaluation']['code_accuracy'] or 0
-    status = "🎯" if accuracy >= 80 else "⚠️" if accuracy >= 50 else "❌"
-    print(f"{status} {result['problem_title']}: {accuracy:.1f}%")
+    print("\n=== RESULTADOS DOS TESTES ===")
+    for test_result in result['evaluation']['test_results']:
+        status = "✅" if test_result['correct'] else "❌"
+        print(f"{status} Teste {test_result['test_case']}: input={test_result['input']}, expected={test_result['expected']}, actual={test_result['actual']}")
+        if test_result['error']:
+            print(f"   Erro: {test_result['error']}")
 
-# %%
+    # %%
+    # Testar todos os problemas
+    print("\n" + "="*50)
+    print("TESTANDO TODOS OS PROBLEMAS")
+    print("="*50)
+
+    all_results = []
+    for problem in problems:
+        print(f"\n--- {problem['title']} ---")
+        result = agente.run_leetcode_test(problem)
+        all_results.append(result)
+        
+        accuracy = result['evaluation']['code_accuracy'] or 0
+        print(f"Acurácia: {accuracy:.1f}%")
+        correct_count = sum(1 for test in result['evaluation']['test_results'] if test['correct'])
+        total_count = len(result['evaluation']['test_results'])
+        print(f"Testes corretos: {correct_count}/{total_count}")
+
+    # Resumo final
+    print(f"\n{'='*50}")
+    print("RESUMO FINAL")
+    print(f"{'='*50}")
+    total_accuracy = sum(r['evaluation']['code_accuracy'] or 0 for r in all_results) / len(all_results)
+    print(f"Acurácia média: {total_accuracy:.1f}%")
+
+    for result in all_results:
+        accuracy = result['evaluation']['code_accuracy'] or 0
+        status = "🎯" if accuracy >= 80 else "⚠️" if accuracy >= 50 else "❌"
+        print(f"{status} {result['problem_title']}: {accuracy:.1f}%")

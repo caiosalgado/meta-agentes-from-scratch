@@ -317,117 +317,236 @@ CRIE UM PIPELINE REVOLUCIONÁRIO!"""
                 "code": f"# Erro na geração: {str(e)}"
             }
     
-    def test_pipeline_multiple_times(self, pipeline_code: str, runs: int = 10) -> Dict[str, Any]:
+    def test_agent_pipeline(self, agent_code: str, agent_name: str, runs: int = 5) -> Dict[str, Any]:
         """
-        Executa pipeline múltiplas vezes e retorna estatísticas consolidadas.
+        FUNÇÃO ÚNICA para testar pipelines de agentes com logs detalhados.
         
         Args:
-            pipeline_code: Código Python do pipeline
+            agent_code: Código Python do pipeline
+            agent_name: Nome do agente/pipeline
             runs: Número de execuções para teste
             
         Returns:
-            Dict com accuracy média e avg_execution_time
+            Dict com resultados consolidados e estatísticas
         """
+        def log_step(step: str, details: str = ""):
+            """Log detalhado com timestamp."""
+            timestamp = datetime.now().strftime("%H:%M:%S")
+            print(f"[{timestamp}] 🔍 {step}")
+            if details:
+                print(f"    ℹ️  {details}")
+        
+        print("\n" + "="*80)
+        log_step(f"TESTANDO PIPELINE: {agent_name}")
+        print("="*80)
+        
         # Carregar problemas LeetCode
+        log_step("Carregando problemas LeetCode...")
         try:
             with open("leetcode_problems.json", encoding="utf-8") as f:
                 problems = json.load(f)["problems"]
+            log_step(f"✅ {len(problems)} problemas carregados")
         except Exception as e:
+            log_step(f"❌ Erro ao carregar problemas: {e}")
             return {
+                "name": agent_name,
                 "accuracy": 0.0,
                 "avg_execution_time": 0.0,
                 "error": f"Erro ao carregar problemas: {str(e)}"
             }
         
-        all_accuracies = []
-        all_execution_times = []
+        # Executar código do agente
+        log_step("Executando código do agente...")
+        try:
+            local_vars = {}
+            exec(agent_code, globals(), local_vars)
+            
+            if 'solve_problem' not in local_vars:
+                log_step("❌ Função solve_problem não encontrada no código")
+                return {
+                    "name": agent_name,
+                    "accuracy": 0.0,
+                    "avg_execution_time": 0.0,
+                    "error": "Função solve_problem não encontrada"
+                }
+                
+            solve_function = local_vars['solve_problem']
+            log_step("✅ Função solve_problem carregada com sucesso")
+            
+        except Exception as e:
+            log_step(f"❌ Erro ao executar código: {e}")
+            return {
+                "name": agent_name,
+                "accuracy": 0.0,
+                "avg_execution_time": 0.0,
+                "error": f"Erro ao executar código: {str(e)}"
+            }
+        
+        # EXECUTAR MÚLTIPLAS VEZES PARA MÉTRICAS CONFIÁVEIS
+        log_step(f"🔄 INICIANDO {runs} EXECUÇÕES PARA MÉTRICAS CONFIÁVEIS...")
+        
+        all_runs = []
         successful_runs = 0
         
-        for run in range(runs):
-            print(f"Executando teste {run + 1}/{runs}...")
+        for run_num in range(1, runs + 1):
+            log_step(f"🏃 EXECUÇÃO {run_num}/{runs}")
+            print("-" * 60)
             
-            try:
-                # Executar código do pipeline
-                local_vars = {}
-                exec(pipeline_code, globals(), local_vars)
+            # Testar cada problema nesta execução
+            correct_count = 0
+            total_problems = len(problems)
+            total_time = 0
+            problem_results = []
+            run_errors = []
+            
+            for i, problem in enumerate(problems):
+                problem_name = problem.get('title', f'Problem {i+1}')
+                log_step(f"  Problema {i+1}/{total_problems}: {problem_name}")
                 
-                if 'solve_problem' not in local_vars:
-                    print(f"Run {run + 1}: Função solve_problem não encontrada")
-                    continue
+                start_time = time.time()
                 
-                solve_function = local_vars['solve_problem']
-                
-                # Testar cada problema
-                correct_count = 0
-                total_problems = len(problems)
-                total_time = 0
-                
-                for problem in problems:
-                    start_time = time.time()
+                try:
+                    # Executar agente no problema
+                    result = solve_function(problem)
+                    execution_time = time.time() - start_time
+                    total_time += execution_time
                     
-                    try:
-                        # Executar função do pipeline
-                        result = solve_function(problem)
-                        execution_time = time.time() - start_time
-                        total_time += execution_time
+                    log_step(f"    ⏱️  Tempo: {execution_time:.2f}s")
+                    
+                    # Verificar se resultado é válido
+                    if isinstance(result, dict) and 'code' in result:
+                        log_step(f"    ✅ Resultado válido")
                         
-                        # Verificar se resultado é válido
-                        if isinstance(result, dict) and 'code' in result:
-                            # Testar código gerado
-                            from llm_agent import LLM_Agent
-                            temp_agent = LLM_Agent(
-                                role="Test Agent",
-                                instruction="Test",
-                                arquitetura_resposta={"code": "code"}
-                            )
-                            
-                            accuracy, _ = temp_agent.test_code_accuracy(
-                                result['code'], 
-                                problem.get('tests', [])
-                            )
-                            
-                            if accuracy > 50:  # Considera correto se > 50% dos testes passaram
-                                correct_count += 1
+                        # Testar código gerado
+                        temp_agent = LLM_Agent(
+                            role="Test Agent",
+                            instruction="Test",
+                            arquitetura_resposta={"code": "code"}
+                        )
                         
-                    except Exception as e:
-                        print(f"Erro no problema {problem['id']}: {str(e)}")
-                        total_time += 1.0  # Penalty time
-                
-                # Calcular métricas do run
-                run_accuracy = (correct_count / total_problems) * 100 if total_problems > 0 else 0
-                run_avg_time = total_time / total_problems if total_problems > 0 else 0
-                
-                all_accuracies.append(run_accuracy)
-                all_execution_times.append(run_avg_time)
+                        accuracy, details = temp_agent.test_code_accuracy(
+                            result['code'], 
+                            problem.get('tests', [])
+                        )
+                        
+                        if accuracy == 100:  # Considera correto apenas se 100% dos testes passaram
+                            correct_count += 1
+                            log_step(f"    🎯 SUCESSO - Acurácia: {accuracy:.1f}%")
+                        else:
+                            log_step(f"    ❌ FALHOU - Acurácia: {accuracy:.1f}%")
+                            run_errors.append(f"{agent_name}: Código falhou em {100-accuracy:.1f}% dos testes (acurácia: {accuracy:.1f}%)")
+                        
+                        problem_results.append({
+                            "problem": problem_name,
+                            "success": accuracy == 100,
+                            "accuracy": accuracy,
+                            "execution_time": execution_time,
+                            "details": details
+                        })
+                        
+                    else:
+                        log_step(f"    ❌ Resultado inválido: {type(result)}")
+                        run_errors.append(f"{agent_name}: Resultado inválido - retornou {type(result)} ao invés de dict com 'code'")
+                        problem_results.append({
+                            "problem": problem_name,
+                            "success": False,
+                            "accuracy": 0,
+                            "execution_time": execution_time,
+                            "error": "Resultado inválido"
+                        })
+                        
+                except Exception as e:
+                    execution_time = time.time() - start_time
+                    total_time += execution_time
+                    error_msg = str(e)
+                    log_step(f"    💥 ERRO: {error_msg}")
+                    run_errors.append(f"{agent_name}: {error_msg}")
+                    problem_results.append({
+                        "problem": problem_name,
+                        "success": False,
+                        "accuracy": 0,
+                        "execution_time": execution_time,
+                        "error": error_msg
+                    })
+            
+            # Calcular métricas desta execução
+            run_accuracy = (correct_count / total_problems) * 100 if total_problems > 0 else 0
+            run_avg_time = total_time / total_problems if total_problems > 0 else 0
+            
+            run_result = {
+                "run_number": run_num,
+                "accuracy": run_accuracy,
+                "avg_execution_time": run_avg_time,
+                "total_time": total_time,
+                "correct_count": correct_count,
+                "total_problems": total_problems,
+                "problem_results": problem_results,
+                "errors": run_errors
+            }
+            
+            all_runs.append(run_result)
+            
+            if len(run_errors) == 0:  # Execução sem erros
                 successful_runs += 1
-                
-                print(f"Run {run + 1}: Acurácia = {run_accuracy:.1f}%, Tempo = {run_avg_time:.2f}s")
-                
-            except Exception as e:
-                print(f"Erro no run {run + 1}: {str(e)}")
-                all_accuracies.append(0.0)
-                all_execution_times.append(10.0)  # Penalty time
+            
+            print("-" * 60)
+            log_step(f"  📊 Run {run_num}: {run_accuracy:.1f}% acurácia, {run_avg_time:.2f}s tempo médio")
+            
+            if run_errors:
+                log_step(f"  ⚠️  {len(run_errors)} erros nesta execução")
         
-        # Calcular estatísticas finais
-        if successful_runs > 0:
-            final_accuracy = sum(all_accuracies) / len(all_accuracies)
-            final_avg_time = sum(all_execution_times) / len(all_execution_times)
-        else:
-            final_accuracy = 0.0
-            final_avg_time = 0.0
+        # CALCULAR ESTATÍSTICAS CONSOLIDADAS
+        log_step("📈 CALCULANDO ESTATÍSTICAS CONSOLIDADAS...")
+        
+        if not all_runs:
+            log_step("❌ Nenhuma execução válida")
+            return {
+                "name": agent_name,
+                "accuracy": 0.0,
+                "avg_execution_time": 0.0,
+                "error": "Nenhuma execução válida"
+            }
+        
+        # Métricas médias
+        accuracies = [run['accuracy'] for run in all_runs]
+        avg_times = [run['avg_execution_time'] for run in all_runs]
+        
+        final_accuracy = sum(accuracies) / len(accuracies)
+        final_avg_time = sum(avg_times) / len(avg_times)
+        
+        # Estatísticas adicionais
+        accuracy_std = (sum([(acc - final_accuracy)**2 for acc in accuracies]) / len(accuracies)) ** 0.5
+        time_std = (sum([(t - final_avg_time)**2 for t in avg_times]) / len(avg_times)) ** 0.5
+        
+        min_accuracy = min(accuracies)
+        max_accuracy = max(accuracies)
+        min_time = min(avg_times)
+        max_time = max(avg_times)
+        
+        # Logs das estatísticas finais
+        log_step("🎯 RESULTADOS FINAIS CONSOLIDADOS:")
+        log_step(f"  📊 Acurácia Média: {final_accuracy:.1f}% (±{accuracy_std:.1f})")
+        log_step(f"  📊 Acurácia Range: {min_accuracy:.1f}% - {max_accuracy:.1f}%")
+        log_step(f"  ⏱️  Tempo Médio: {final_avg_time:.2f}s (±{time_std:.2f})")
+        log_step(f"  ⏱️  Tempo Range: {min_time:.2f}s - {max_time:.2f}s")
+        log_step(f"  ✅ Execuções Bem-sucedidas: {successful_runs}/{runs}")
         
         return {
+            "name": agent_name,
             "accuracy": final_accuracy,
+            "accuracy_std": accuracy_std,
+            "accuracy_range": [min_accuracy, max_accuracy],
             "avg_execution_time": final_avg_time,
+            "time_std": time_std,
+            "time_range": [min_time, max_time],
             "successful_runs": successful_runs,
             "total_runs": runs,
-            "all_accuracies": all_accuracies,
-            "all_execution_times": all_execution_times
+            "all_runs": all_runs
         }
     
     def create_and_evaluate_agent(self, task_explicacao: str) -> Dict[str, Any]:
         """
-        Fluxo completo: gera agente → testa 10x → salva no histórico.
+        Fluxo completo: gera agente → testa → salva no histórico.
         
         Args:
             task_explicacao: Descrição da tarefa para o novo agente
@@ -450,39 +569,29 @@ CRIE UM PIPELINE REVOLUCIONÁRIO!"""
         print(f"✅ Agente gerado: {agent_spec['name']}")
         print(f"💭 Pensamento: {agent_spec['pensamento']}")
         
-        # Testar agente múltiplas vezes
-        print("🧪 Testando agente 10 vezes...")
-        performance = self.test_pipeline_multiple_times(agent_spec['code'], runs=10)
+        # Testar agente usando função centralizada
+        print("🧪 Testando agente...")
+        test_results = self.test_agent_pipeline(
+            agent_code=agent_spec['code'],
+            agent_name=agent_spec['name'],
+            runs=5
+        )
         
-        # Criar entrada do histórico
-        agent_entry = {
-            "agent_id": self._generate_agent_id(),
-            "name": agent_spec['name'],
-            "creation_timestamp": datetime.now().isoformat(),
-            "config": {
-                "type": "pipeline",  # Detectar automaticamente ou assumir pipeline
-                "code": agent_spec['code']
-            },
-            "performance": {
-                "accuracy": performance['accuracy'],
-                "avg_execution_time": performance['avg_execution_time']
-            },
-            "thinking": agent_spec['pensamento'],
-            "task_explanation": task_explicacao,
-            "test_details": performance
-        }
+        # Adicionar ao histórico usando função centralizada
+        agent_entry = self.add_agent_to_history(
+            agent_name=agent_spec['name'],
+            agent_code=agent_spec['code'],
+            description=agent_spec['pensamento'],
+            test_results=test_results,
+            agent_type="generated_pipeline"
+        )
         
-        # Adicionar ao histórico
-        self.agent_history.append(agent_entry)
-        self._save_history()
-        
-        print(f"📊 Performance: {performance['accuracy']:.1f}% acurácia, {performance['avg_execution_time']:.2f}s tempo médio")
-        print(f"💾 Salvo no histórico com ID: {agent_entry['agent_id']}")
+        print(f"📊 Performance: {test_results['accuracy']:.1f}% acurácia, {test_results['avg_execution_time']:.2f}s tempo médio")
         
         return {
             "success": True,
             "agent": agent_entry,
-            "performance": performance
+            "performance": test_results
         }
     
     def get_agent_statistics(self) -> Dict[str, Any]:
@@ -517,6 +626,67 @@ CRIE UM PIPELINE REVOLUCIONÁRIO!"""
         )
         
         return sorted_agents[:top_n]
+    
+    def add_agent_to_history(self, 
+                           agent_name: str,
+                           agent_code: str, 
+                           description: str,
+                           test_results: Dict[str, Any],
+                           agent_type: str = "pipeline") -> Dict[str, Any]:
+        """
+        Adiciona agente testado ao histórico de forma padronizada.
+        
+        Args:
+            agent_name: Nome do agente
+            agent_code: Código do agente
+            description: Descrição do agente
+            test_results: Resultados do test_agent_pipeline()
+            agent_type: Tipo do agente (pipeline, manual_pipeline, etc.)
+            
+        Returns:
+            Dict com entrada do histórico criada
+        """
+        agent_entry = {
+            "agent_id": self._generate_agent_id(),
+            "name": agent_name,
+            "creation_timestamp": datetime.now().isoformat(),
+            "config": {
+                "type": agent_type,
+                "code": agent_code,
+                "description": description
+            },
+            "performance": {
+                "accuracy": test_results.get('accuracy', 0.0),
+                "accuracy_std": test_results.get('accuracy_std', 0.0),
+                "accuracy_range": test_results.get('accuracy_range', [0.0, 0.0]),
+                "avg_execution_time": test_results.get('avg_execution_time', 0.0),
+                "time_std": test_results.get('time_std', 0.0),
+                "time_range": test_results.get('time_range', [0.0, 0.0])
+            },
+            "testing_stats": {
+                "successful_runs": test_results.get('successful_runs', 0),
+                "total_runs": test_results.get('total_runs', 0),
+                "all_runs_summary": [
+                    {
+                        "run": run['run_number'],
+                        "accuracy": run['accuracy'],
+                        "avg_time": run['avg_execution_time'],
+                        "errors": len(run['errors'])
+                    } for run in test_results.get('all_runs', [])
+                ]
+            },
+            "thinking": f"Agente testado. {description}. Testado {test_results.get('total_runs', 0)} vezes com {test_results.get('successful_runs', 0)} execuções bem-sucedidas. Acurácia média: {test_results.get('accuracy', 0):.1f}%.",
+            "task_explanation": f"Teste de {agent_name}",
+            "detailed_results": test_results.get('all_runs', [])
+        }
+        
+        # Adicionar ao histórico
+        self.agent_history.append(agent_entry)
+        self._save_history()
+        
+        print(f"💾 Agente {agent_name} salvo no histórico com ID: {agent_entry['agent_id']}")
+        
+        return agent_entry
 
 
 # Exemplo de uso

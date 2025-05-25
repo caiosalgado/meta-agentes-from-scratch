@@ -29,14 +29,53 @@ class LLM_Meta_Agent:
     DEFAULT_TEST_RUNS = 3  # Número padrão de execuções para teste de agentes
     
     # SYSTEM PROMPT ÚNICO - SOURCE OF TRUTH
-    SYSTEM_PROMPT = """Você é um especialista em engenharia de agentes de IA.
+#     SYSTEM_PROMPT = """Você é um especialista em engenharia de agentes de IA.
 
-RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
+# RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
+# {
+#   "name": "Nome descritivo do pipeline",
+#   "pensamento": "Por que esta arquitetura vai funcionar melhor...", 
+#   "code": "Código Python executável que cria e orquestra os agentes"
+# }"""
+
+    SYSTEM_PROMPT = """
+Você é um especialista em engenharia de agentes de IA.
+
+**FORMATO OBRIGATÓRIO DA RESPOSTA**
+- Responda **somente** com um objeto JSON válido (sem markdown, sem comentários, sem texto fora das chaves).
+- O objeto deve ter exatamente estas chaves, nesta ordem:
+
 {
-  "name": "Nome descritivo do pipeline",
-  "pensamento": "Por que esta arquitetura vai funcionar melhor...", 
-  "code": "Código Python executável que cria e orquestra os agentes"
-}"""
+  "name":        <string>,
+  "pensamento":  <string>,
+  "code":        <string Python compilável>
+}
+
+**REGRAS PARA O CAMPO "code"**
+1. O script deve compilar em Python 3.11 sem dependências externas.
+2. Inclua todos os `import` necessários (ex.: `from typing import List, Dict`).
+3. Defina a função **`solve_problem(problem_data)`** que retorna **`{"code": "...python..."}`**.
+4. Para **qualquer string multi-linha** dentro do código (prompts, f-strings, etc.) escolha *uma* das opções:
+   - Use aspas triplas:  
+     ```python
+     instruction = f'''Implemente solução:
+Análise: {analysis["analysis"]}
+
+Requisitos: código limpo
+'''
+     ```
+   - Ou mantenha em uma só linha e insira `\\n`:  
+     ```python
+     instruction = (
+         f"Implemente solução:\\n"
+         f"Análise: {analysis['analysis']}\\n"
+         "Requisitos: código limpo"
+     )
+     ```
+   **Nunca** quebre a linha logo depois de abrir `"`.
+5. Não inclua blocos markdown (```python) dentro da string JSON.
+6. Escape \\, " e quebras de linha (\n) para manter o JSON válido.
+"""
 
     def __init__(self, 
                  model: str = "ollama:qwen3:32b",
@@ -870,18 +909,8 @@ CRIE UM PIPELINE REVOLUCIONÁRIO!"""
             "testing_stats": {
                 "successful_runs": test_results.get('successful_runs', 0),
                 "total_runs": test_results.get('total_runs', 0),
-                "all_runs_summary": [
-                    {
-                        "run": run['run_number'],
-                        "accuracy": run['accuracy'],
-                        "avg_time": run['avg_execution_time'],
-                        "errors": len(run['errors'])
-                    } for run in test_results.get('all_runs', [])
-                ]
-            },
-            "thinking": f"Agente testado. {description}. Testado {test_results.get('total_runs', 0)} vezes com {test_results.get('successful_runs', 0)} execuções bem-sucedidas. Acurácia média: {test_results.get('accuracy', 0):.1f}%.",
-            "task_explanation": f"Teste de {agent_name}",
-            "detailed_results": test_results.get('all_runs', [])
+                "detailed_results": test_results.get('all_runs', [])
+            }
         }
         
         # Adicionar ao histórico

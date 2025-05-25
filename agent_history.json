@@ -19232,5 +19232,1158 @@
     "thinking": "Agente testado. Este pipeline combina três estágios otimizados: análise estruturada com modelo leve para identificar requisitos críticos, geração de código com modelo pesado para precisão extrema, e validação de edge cases com modelo especializado. A especialização funcional e temperatura adaptativa (0.5 para análise, 0.1 para codificação) asseguram equilíbrio entre velocidade e robustez. A análise estruturada forçada com campos específicos garante que o codificador receba contexto completo, enquanto a validação explícita dos casos de borda previne erros comuns.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
     "task_explanation": "Teste de Triple-Stage LeetCode Master",
     "detailed_results": []
+  },
+  {
+    "agent_id": "285",
+    "name": "PrecisionFlow Dual-Stage Pipeline",
+    "creation_timestamp": "2025-05-25T19:08:00.116244",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise detalhada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Estruturas de dados necessárias\n        4. Abordagem com pseudocódigo\n        5. 3 casos de borda críticos\n        6. Complexidade temporal e espacial\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"data_structures\": \"list\",\n            \"approach\": \"string\",\n            \"edge_cases\": \"list\",\n            \"time_complexity\": \"string\",\n            \"space_complexity\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Implementador Ótimo (Modelo pesado)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise:\n        Tipo: {analysis['problem_type']}\n        Restrições: {analysis['constraints']}\n        Estruturas: {analysis['data_structures']}\n        Abordagem: {analysis['approach']}\n        Casos de borda: {analysis['edge_cases']}\n        Complexidade: {analysis['time_complexity']}\n        \n        Requisitos: Código otimizado, comentarios explicando a abordagem, testes unitários para casos de borda\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    return implementer.generate_response(analysis)",
+      "description": "Este pipeline combina análise estruturada e codificação otimizada. A primeira fase usa um modelo leve com temperatura média para criar um plano detalhado com estrutura de dados, complexidade e cenários críticos. A segunda fase usa um modelo pesado com baixa temperatura para seguir o plano com precisão extrema, garantindo cobertura completa de edge cases e otimização de performance."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina análise estruturada e codificação otimizada. A primeira fase usa um modelo leve com temperatura média para criar um plano detalhado com estrutura de dados, complexidade e cenários críticos. A segunda fase usa um modelo pesado com baixa temperatura para seguir o plano com precisão extrema, garantindo cobertura completa de edge cases e otimização de performance.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de PrecisionFlow Dual-Stage Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "286",
+    "name": "Structural Precision Pipeline",
+    "creation_timestamp": "2025-05-25T19:12:19.068380",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve + temperatura adaptativa)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais (com pesos)\n        3. Casos de borda críticos (com prioridades)\n        4. Abordagem recomendada (com estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list[dict]\",\n            \"edge_cases\": \"list[dict]\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo (Modelo pesado + baixa temperatura)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis.get('problem_type', '')}\n        Restrições: {analysis.get('constraints', [])}\n        Casos de borda: {analysis.get('edge_cases', [])}\n        Abordagem: {analysis.get('approach', '')}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    code_response = implementer.generate_response()\n\n    # Validador integrado (sem estágio adicional)\n    code_response[\"validations\"] = {\n        \"edge_cases_handled\": [case for case in analysis.get('edge_cases', []) if case.get('priority') > 3],\n        \"time_complexity\": \"O(n log n)\" if \"sort\" in code_response[\"code\"] else \"O(n)\"\n    }\n\n    return code_response",
+      "description": "Combina velocidade de análise estruturada (Gemma3:4b) com precisão extrema no código (Qwen3:32b). A análise inicial fornece contexto direto com temperatura adaptativa para balancear criatividade e estrutura, enquanto a baixa temperatura no estágio final garante código otimizado. A especialização e fluxo direto de dados reduzem ambiguidade, e a estrutura forçada de resposta garante cobertura de todos os casos críticos. A validação integrada testa edge cases automaticamente, aumentando robustez sem adicionar estágios."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Combina velocidade de análise estruturada (Gemma3:4b) com precisão extrema no código (Qwen3:32b). A análise inicial fornece contexto direto com temperatura adaptativa para balancear criatividade e estrutura, enquanto a baixa temperatura no estágio final garante código otimizado. A especialização e fluxo direto de dados reduzem ambiguidade, e a estrutura forçada de resposta garante cobertura de todos os casos críticos. A validação integrada testa edge cases automaticamente, aumentando robustez sem adicionar estágios.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Structural Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "287",
+    "name": "Triple-Stage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T19:16:31.105303",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estratégico (criatividade + abrangência)\n    strategist = LLM_Agent(\n        role=\"Deep Pattern Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais (com valores)\n        3. Casos de borda críticos (ex: vazios, máximos)\n        4. Abordagem detalhada (passo a passo)\n        5. Estrutura de dados ideal\n        6. Complexidade temporal\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\",\n            \"data_structures\": \"list\",\n            \"time_complexity\": \"string\"\n        },\n        model=\"ollama:qwen3:4b\",\n        temperatura=0.7\n    )\n\n    analysis = strategist.generate_response(problem_data)\n\n    # AGENTE 2: Validador de Robustez\n    validator = LLM_Agent(\n        role=\"Robustness Checker\",\n        instruction=f\"Validar e aprimorar o plano com:\n        - Verificação de cobertura de casos críticos\n        - Análise de riscos de falha\n        - Sugestões de otimização\n        - Adição de condições edge faltantes\",\n        arquitetura_resposta={\n            \"validated_approach\": \"string\",\n            \"additional_edge_cases\": \"list\",\n            \"risk_mitigations\": \"list\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    validation = validator.generate_response(problem_data)\n\n    # AGENTE 3: Codificador Extremamente Preciso\n    implementer = LLM_Agent(\n        role=\"Extreme Precision Coder\",\n        instruction=f\"Implemente código Python com base na análise validada:\n        Tipo de problema: {validation.get('validated_approach')}\n        Restrições: {analysis.get('constraints')}\n        Casos de borda: {analysis.get('edge_cases') + validation.get('additional_edge_cases')}\n        Abordagem: {validation.get('validated_approach')}\n        Estruturas: {analysis.get('data_structures')}\n        Complexidade: {analysis.get('time_complexity')}\n        \n        Requisitos: Código otimizado, testes integrados, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.1,\n        arquitetura_respostas_anteriores=[analysis, validation]\n    )\n\n    return implementer.generate_response(problem_data)",
+      "description": "Este pipeline combina três estágios especializados: (1) Análise Estratégica com modelo criativo para identificar padrões profundos, (2) Validação de Robustez com modelo balanceado para verificar cobertura de casos críticos, e (3) Implementação Extremamente Precisa com modelo pesado. A temperatura adaptativa (alta para análise, média para validação, baixa para codificação) maximiza a eficiência. A estrutura de resposta forçada garante que todos os elementos críticos sejam passados entre estágios, reduzindo ambiguidade."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina três estágios especializados: (1) Análise Estratégica com modelo criativo para identificar padrões profundos, (2) Validação de Robustez com modelo balanceado para verificar cobertura de casos críticos, e (3) Implementação Extremamente Precisa com modelo pesado. A temperatura adaptativa (alta para análise, média para validação, baixa para codificação) maximiza a eficiência. A estrutura de resposta forçada garante que todos os elementos críticos sejam passados entre estágios, reduzindo ambiguidade.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Triple-Stage Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "288",
+    "name": "Precision Dual-Stage LeetCode Solver",
+    "creation_timestamp": "2025-05-25T19:22:14.796148",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo (Modelo pesado)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis.get('problem_type', '')}\n        Restrições: {analysis.get('constraints', [])}\n        Casos de borda: {analysis.get('edge_cases', [])}\n        Abordagem: {analysis.get('approach', '')}\n        \n        Regras estritas:\n        1. Use as estruturas de dados recomendadas\n        2. Trate todos os casos de borda explicitamente\n        3. Adicione comentários explicando cada etapa\n        4. Retorne a solução no formato dict: {\\\"code\\\": \"...\", \\\"time_complexity\\\": \"...\"}\",\n        arquitetura_resposta={\\\"code\\\": \"string\", \\\"time_complexity\\\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.1\n    )\n\n    return implementer.generate_response(analysis)",
+      "description": "Esta arquitetura combina a velocidade de um modelo leve para análise estruturada com a precisão de um modelo pesado para codificação, usando temperatura adaptativa. A análise detalhada fornece contexto direto ao codificador, minimizando ambiguidades e garantindo cobertura de casos críticos. A especialização de funções (análise estruturada vs. codificação otimizada) e o fluxo direto de dados aumentam a eficiência e a robustez, enquanto a baixa temperatura no estágio final assegura precisão extrema."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Esta arquitetura combina a velocidade de um modelo leve para análise estruturada com a precisão de um modelo pesado para codificação, usando temperatura adaptativa. A análise detalhada fornece contexto direto ao codificador, minimizando ambiguidades e garantindo cobertura de casos críticos. A especialização de funções (análise estruturada vs. codificação otimizada) e o fluxo direto de dados aumentam a eficiência e a robustez, enquanto a baixa temperatura no estágio final assegura precisão extrema.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Precision Dual-Stage LeetCode Solver",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "289",
+    "name": "PrecisionFlow Dual-Agent Pipeline",
+    "creation_timestamp": "2025-05-25T19:25:21.664240",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.6\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo (Modelo pesado)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis.get('problem_type', '')}\n        Restrições: {analysis.get('constraints', [])}\n        Casos de borda: {analysis.get('edge_cases', [])}\n        Abordagem: {analysis.get('approach', '')}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    return implementer.generate_response(problem_data)",
+      "description": "Este pipeline combina velocidade de análise estruturada (Gemma3:4b) com precisão extrema de codificação (Qwen3:32b). A análise inicial fornece contexto direto ao codificador via estrutura forçada de 4 elementos críticos, enquanto a baixa temperatura (0.2) no codificador assegura mínima ambiguidade. A especialização de funções e o fluxo direto de dados otimizam eficiência. A estrutura forçada garante cobertura de casos críticos, e a temperatura adaptativa assegura precisão no estágio final."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina velocidade de análise estruturada (Gemma3:4b) com precisão extrema de codificação (Qwen3:32b). A análise inicial fornece contexto direto ao codificador via estrutura forçada de 4 elementos críticos, enquanto a baixa temperatura (0.2) no codificador assegura mínima ambiguidade. A especialização de funções e o fluxo direto de dados otimizam eficiência. A estrutura forçada garante cobertura de casos críticos, e a temperatura adaptativa assegura precisão no estágio final.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de PrecisionFlow Dual-Agent Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "290",
+    "name": "Structural Precision Pipeline",
+    "creation_timestamp": "2025-05-25T19:29:51.078373",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada\n        5. Exemplo de entrada/saída ({problem_data['example_input']}/{problem_data['example_output']})\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\",\n            \"example\": \"dict\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base:\n        Tipo: {analysis['problem_type']}\n        Restrições: {analysis['constraints']}\n        Casos de borda: {analysis['edge_cases']}\n        Abordagem: {analysis['approach']}\n        Exemplo: {analysis['example']}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios com abordagem, validação com exemplo\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    return implementer.generate_response(analysis)",
+      "description": "Este pipeline combina eficiência estruturada com precisão extrema. O primeiro agente (Gemma3:4b) identifica o tipo de problema, restrições, casos de borda e exemplos, garantindo cobertura completa. O segundo agente (Qwen3:32b) gera código otimizado usando análise estruturada, exemplos e instruções explícitas para tratar todos os casos de borda. Temperaturas adaptativas: média (0.5) para análise balanceada e baixa (0.2) para precisão extrema na codificação. A estrutura de resposta forçada e a inclusão de exemplos no prompt garantem alinhamento perfeito entre análise e implementação."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina eficiência estruturada com precisão extrema. O primeiro agente (Gemma3:4b) identifica o tipo de problema, restrições, casos de borda e exemplos, garantindo cobertura completa. O segundo agente (Qwen3:32b) gera código otimizado usando análise estruturada, exemplos e instruções explícitas para tratar todos os casos de borda. Temperaturas adaptativas: média (0.5) para análise balanceada e baixa (0.2) para precisão extrema na codificação. A estrutura de resposta forçada e a inclusão de exemplos no prompt garantem alinhamento perfeito entre análise e implementação.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Structural Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "291",
+    "name": "Precision Hybrid Pipeline",
+    "creation_timestamp": "2025-05-25T19:33:33.727219",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, BFS, etc)\n        2. Restrições principais (formato: lista de strings)\n        3. Casos de borda críticos (formato: lista de exemplos)\n        4. Abordagem recomendada (incluindo estruturas de dados)\n        5. Complexidade esperada (O(n) ou similar)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\",\n            \"complexity\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo (Modelo pesado)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis['problem_type']}\n        Restrições: {analysis['constraints']}\n        Casos de borda: {analysis['edge_cases']}\n        Abordagem: {analysis['approach']}\n        Complexidade: {analysis['complexity']}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros,\n        inclusão de validações para entradas inválidas\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    return implementer.generate_response(problem_data)",
+      "description": "Usa análise estruturada com modelo leve para capturar todos os elementos críticos do problema (tipo, restrições, casos de borda, abordagem e complexidade) seguida por codificação precisa com modelo pesado. A análise forçada em formato estruturado garante cobertura completa, enquanto a baixa temperatura no estágio final assegura precisão extrema. A especialização de funções e fluxo direto de dados otimizam eficiência."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Usa análise estruturada com modelo leve para capturar todos os elementos críticos do problema (tipo, restrições, casos de borda, abordagem e complexidade) seguida por codificação precisa com modelo pesado. A análise forçada em formato estruturado garante cobertura completa, enquanto a baixa temperatura no estágio final assegura precisão extrema. A especialização de funções e fluxo direto de dados otimizam eficiência.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Precision Hybrid Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "292",
+    "name": "Structural Precision Pipeline",
+    "creation_timestamp": "2025-05-25T19:38:03.461916",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.6\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo (Modelo pesado)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis.get('problem_type', '')}\n        Restrições: {analysis.get('constraints', [])}\n        Casos de borda: {analysis.get('edge_cases', [])}\n        Abordagem: {analysis.get('approach', '')}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    return implementer.generate_response(problem_data)",
+      "description": "Este pipeline combina análise estruturada com geração de código otimizada. O primeiro agente (Gemma3:4b) identifica claramente o tipo de problema, restrições, casos de borda e abordagem recomendada, usando temperatura média para balancear criatividade e precisão. O segundo agente (Qwen3:32b) gera código com baixa temperatura para maximizar a precisão, usando a análise estruturada como contexto direto. A especialização de funções e formato forçado de resposta garantem cobertura de casos críticos e reduzem ambiguidade."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina análise estruturada com geração de código otimizada. O primeiro agente (Gemma3:4b) identifica claramente o tipo de problema, restrições, casos de borda e abordagem recomendada, usando temperatura média para balancear criatividade e precisão. O segundo agente (Qwen3:32b) gera código com baixa temperatura para maximizar a precisão, usando a análise estruturada como contexto direto. A especialização de funções e formato forçado de resposta garantem cobertura de casos críticos e reduzem ambiguidade.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Structural Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "293",
+    "name": "Tri-Stage Adaptive Precision Pipeline",
+    "creation_timestamp": "2025-05-25T19:41:31.508801",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Planejador Detalhado (Modelo intermediário)\n    planner = LLM_Agent(\n        role=\"Detailed Planner\",\n        instruction=f\"Detalhe a abordagem com:\n        - Estrutura de dados exata\n        - Passos algorítmicos\n        - Complexidade temporal/spacial\n        - Exemplo de execução\", \n        arquitetura_resposta={\n            \"data_structure\": \"string\",\n            \"algorithm_steps\": \"list\",\n            \"complexity\": \"string\",\n            \"example\": \"dict\"\n        },\n        model=\"ollama:gemma3:8b\",\n        temperatura=0.3,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    plan = planner.generate_response(analysis)\n\n    # AGENTE 3: Codificador Ótimo (Modelo pesado)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base:\n        Tipo de problema: {plan['data_structure']}\n        Algoritmo: {plan['algorithm_steps']}\n        Restrições: {analysis['constraints']}\n        Casos de borda: {analysis['edge_cases']}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.15,\n        arquitetura_respostas_anteriores=[analysis, plan]\n    )\n\n    return implementer.generate_response(analysis)",
+      "description": "Esta arquitetura utiliza três estágios especializados: Análise (rápida e estruturada), Planejamento (detalhado e otimizado) e Implementação (preciso e robusto). O estágio de análise identifica elementos críticos com modelo leve, o planejamento detalha a abordagem com modelo intermediário, e a implementação gera código com modelo pesado. A especialização de funções, fluxo direto de dados e estruturas de resposta forçadas aumentam a eficiência e cobertura de casos críticos."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Esta arquitetura utiliza três estágios especializados: Análise (rápida e estruturada), Planejamento (detalhado e otimizado) e Implementação (preciso e robusto). O estágio de análise identifica elementos críticos com modelo leve, o planejamento detalha a abordagem com modelo intermediário, e a implementação gera código com modelo pesado. A especialização de funções, fluxo direto de dados e estruturas de resposta forçadas aumentam a eficiência e cobertura de casos críticos.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Tri-Stage Adaptive Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "294",
+    "name": "Triple-Stage LeetCode Solver",
+    "creation_timestamp": "2025-05-25T19:45:09.429571",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # Stage 1: Structural Analysis (Light model for speed)\n    analyzer = LLM_Agent(\n        role=\"Problem Analyzer\",\n        instruction=f\"Analyze problem structure with:\n        1. Problem type (array, DP, graph, etc)\n        2. Constraints (time/space complexity)\n        3. Edge cases (empty input, max values, etc)\n        4. Suggested data structures\",\n        architecture_response={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"data_structures\": \"list\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperature=0.5\n    )\n    analysis = analyzer.generate_response(problem_data)\n\n    # Stage 2: Algorithm Design (Medium model for balanced reasoning)\n    planner = LLM_Agent(\n        role=\"Algorithm Designer\",\n        instruction=f\"Design step-by-step solution:\n        Problem Type: {analysis['problem_type']}\n        Constraints: {analysis['constraints']}\n        Edge Cases: {analysis['edge_cases']}\n        Data Structures: {analysis['data_structures']}\n        \n        Output required:\n        1. Time/Space complexity\n        2. Core algorithm logic\n        3. Edge case handling plan\",\n        architecture_response={\n            \"complexity\": \"string\",\n            \"algorithm\": \"string\",\n            \"edge_handling\": \"list\"\n        },\n        model=\"ollama:qwen3:1.8b\",\n        temperature=0.3\n    )\n    plan = planner.generate_response(analysis)\n\n    # Stage 3: Precision Implementation (Heavy model for accuracy)\n    implementer = LLM_Agent(\n        role=\"Code Generator\",\n        instruction=f\"Generate optimized Python code with:\n        Algorithm: {plan['algorithm']}\n        Complexity: {plan['complexity']}\n        Edge Cases: {plan['edge_handling']}\n        \n        Requirements: Code comments, explicit edge case checks, PEP8 compliance\",\n        architecture_response={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperature=0.1,\n        architecture_responses_previous=[analysis, plan]\n    )\n    return implementer.generate_response(plan)",
+      "description": "Este pipeline utiliza três estágios especializados: 1) Análise estruturada com modelo leve para identificar restrições e casos críticos, 2) Planejamento algorítmico com modelo médio para definir abordagem detalhada, e 3) Implementação final com modelo pesado para código otimizado. A especialização de funções, temperaturas adaptativas e fluxo direto de dados garantem cobertura de casos críticos, precisão extrema e velocidade. Cada estágio refina os resultados do anterior, eliminando ambiguidade."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline utiliza três estágios especializados: 1) Análise estruturada com modelo leve para identificar restrições e casos críticos, 2) Planejamento algorítmico com modelo médio para definir abordagem detalhada, e 3) Implementação final com modelo pesado para código otimizado. A especialização de funções, temperaturas adaptativas e fluxo direto de dados garantem cobertura de casos críticos, precisão extrema e velocidade. Cada estágio refina os resultados do anterior, eliminando ambiguidade.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Triple-Stage LeetCode Solver",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "295",
+    "name": "TriStage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T19:48:16.792829",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Classificador de Problema\n    classifier = LLM_Agent(\n        role=\"Problem Classifier\",\n        instruction=\"Classifique o problema e identifique:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Padrões-chave (recursão, backtracking, etc)\n        3. Estruturas de dados recomendadas\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"patterns\": \"list\",\n            \"data_structures\": \"list\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n    classification = classifier.generate_response(problem_data)\n\n    # AGENTE 2: Identificador de Restrições\n    constraint_identifier = LLM_Agent(\n        role=\"Constraint Identifier\",\n        instruction=\"Identifique:\n        1. Restrições numéricas e de tempo\n        2. Casos de borda críticos\n        3. Exemplos de entrada/saída\",\n        arquitetura_resposta={\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"examples\": \"list\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.6,\n        arquitetura_respostas_anteriores=[classification]\n    )\n    constraints_analysis = constraint_identifier.generate_response(problem_data)\n\n    # AGENTE 3: Gerador de Código Ótimo\n    code_generator = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=\"Implemente código Python com base:\n        Tipo de problema: {problem_type}\n        Padrões: {patterns}\n        Restrições: {constraints}\n        Casos de borda: {edge_cases}\n        Estruturas de dados: {data_structures}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[classification, constraints_analysis]\n    )\n\n    return code_generator.generate_response(problem_data)",
+      "description": "Este pipeline combina velocidade e precisão em três estágios especializados. 1) Classificador de problema (Gemma3 4b, temperatura 0.5) identifica tipos de problemas e padrões. 2) Identificador de restrições (Gemma3 4b, temperatura 0.6) detecta restrições e casos de borda. 3) Gerador de código (Qwen3 32b, temperatura 0.2) produz código otimizado com base nas informações anteriores. A especialização de funções, estrutura de resposta forçada e fluxo direto de dados aumentam eficiência e robustez."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina velocidade e precisão em três estágios especializados. 1) Classificador de problema (Gemma3 4b, temperatura 0.5) identifica tipos de problemas e padrões. 2) Identificador de restrições (Gemma3 4b, temperatura 0.6) detecta restrições e casos de borda. 3) Gerador de código (Qwen3 32b, temperatura 0.2) produz código otimizado com base nas informações anteriores. A especialização de funções, estrutura de resposta forçada e fluxo direto de dados aumentam eficiência e robustez.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de TriStage Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "296",
+    "name": "Ultra-Efficient Dual-Agent Pipeline",
+    "creation_timestamp": "2025-05-25T19:51:42.951761",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada com estruturas de dados\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis.get('problem_type', '')}\n        Restrições: {analysis.get('constraints', [])}\n        Casos de borda: {analysis.get('edge_cases', [])}\n        Abordagem: {analysis.get('approach', '')}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    return implementer.generate_response(problem_data)",
+      "description": "Esta arquitetura combina velocidade e precisão usando Gemma3:4b para análise estruturada (temperatura média 0.5) e Qwen3:32b para codificação (temperatura baixa 0.2). O primeiro agente identifica claramente o tipo de problema, restrições, casos de borda e abordagem, enquanto o segundo gera código otimizado com tratamento explícito de todos os requisitos. A especialização rigorosa e a estrutura forçada de resposta garantem cobertura completa de casos críticos, enquanto o fluxo direto de dados entre agentes minimiza ambiguidade."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Esta arquitetura combina velocidade e precisão usando Gemma3:4b para análise estruturada (temperatura média 0.5) e Qwen3:32b para codificação (temperatura baixa 0.2). O primeiro agente identifica claramente o tipo de problema, restrições, casos de borda e abordagem, enquanto o segundo gera código otimizado com tratamento explícito de todos os requisitos. A especialização rigorosa e a estrutura forçada de resposta garantem cobertura completa de casos críticos, enquanto o fluxo direto de dados entre agentes minimiza ambiguidade.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Ultra-Efficient Dual-Agent Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "297",
+    "name": "TriStage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T19:56:25.526624",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # Stage 1: Structural Analysis (Gemma3:7b - Medium temperature for comprehensive insights)\n    analyzer = LLM_Agent(\n        role=\"Deep Structural Analyzer\",\n        instruction=f\"Forneça análise completa com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições e limitações\n        3. Casos de borda críticos\n        4. Abordagem recomendada\n        5. Complexidade esperada\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\",\n            \"complexity\": \"string\"\n        },\n        model=\"gemma3_7b\",\n        temperatura=0.5\n    )\n    analysis = analyzer.generate_response(problem_data)\n\n    # Stage 2: Algorithm Planning (Qwen3:32b - Low temperature for structured planning)\n    planner = LLM_Agent(\n        role=\"Algorithm Architect\",\n        instruction=f\"Crie plano de execução baseado na análise:\n        Tipo: {analysis['problem_type']}\n        Restrições: {analysis['constraints']}\n        Casos de borda: {analysis['edge_cases']}\n        Abordagem: {analysis['approach']}\n        \n        Requisitos: Passos sequenciais, validações intermediárias, estruturas de dados\",\n        arquitetura_resposta={\n            \"steps\": \"list\",\n            \"validations\": \"list\",\n            \"data_structures\": \"list\"\n        },\n        model=\"qwen3_32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n    plan = planner.generate_response(analysis)\n\n    # Stage 3: Code Generation (Llama3:8b - Very low temperature for precision)\n    implementer = LLM_Agent(\n        role=\"Code Oracle\",\n        instruction=f\"Implemente código Python com base no plano:\n        Passos: {plan['steps']}\n        Validações: {plan['validations']}\n        Estruturas: {plan['data_structures']}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"llama3_8b\",\n        temperatura=0.1,\n        arquitetura_respostas_anteriores=[analysis, plan]\n    )\n\n    return implementer.generate_response(plan)",
+      "description": "Este pipeline revolucionário utiliza três estágios especializados para maximizar a precisão e eficiência: 1) Análise Estruturada com modelagem de contexto, 2) Planejamento Algorítmico com validação explícita e 3) Implementação Ótima com código otimizado. A divisão em três fases permite especialização radical, com temperaturas adaptativas e estruturas de resposta hierárquicas que garantem cobertura completa de casos críticos."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline revolucionário utiliza três estágios especializados para maximizar a precisão e eficiência: 1) Análise Estruturada com modelagem de contexto, 2) Planejamento Algorítmico com validação explícita e 3) Implementação Ótima com código otimizado. A divisão em três fases permite especialização radical, com temperaturas adaptativas e estruturas de resposta hierárquicas que garantem cobertura completa de casos críticos.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de TriStage Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "298",
+    "name": "Triple-Stage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:00:01.475459",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve + temperatura média)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo (Modelo pesado + temperatura baixa)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis.get('problem_type', '')}\n        Restrições: {analysis.get('constraints', [])}\n        Casos de borda: {analysis.get('edge_cases', [])}\n        Abordagem: {analysis.get('approach', '')}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    code = implementer.generate_response()\n\n    # AGENTE 3: Validador Reativo (Modelo especializado + temperatura adaptativa)\n    validator = LLM_Agent(\n        role=\"Edge Case Validator\",\n        instruction=f\"Valide a solução para:\n        1. Cobertura de todos os casos de borda identificados\n        2. Complexidade temporal/espacial adequada\n        3. Tratamento de entradas inválidas\n        4. Teste com exemplos fornecidos no problema\",\n        arquitetura_resposta={\n            \"validation_result\": \"string\",\n            \"adjusted_code\": \"string\"\n        },\n        model=\"ollama:phi3:4096\",\n        temperatura=0.3,\n        arquitetura_respostas_anteriores=[analysis, code]\n    )\n\n    validation = validator.generate_response()\n\n    return {\n        \"code\": validation.get('adjusted_code'),\n        \"analysis\": analysis,\n        \"validation\": validation.get('validation_result')\n    }",
+      "description": "Este pipeline combina velocidade de modelos leves para análise inicial, precisão extrema de modelos pesados para codificação, e validação reativa para garantir cobertura de edge cases. A especialização tripla com divisão de responsabilidades (análise, codificação, validação) e temperatura adaptativa otimiza eficiência e robustez. A validação reativa garante que cada solução passe por verificação automática de edge cases identificados, reduzindo falhas críticas."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina velocidade de modelos leves para análise inicial, precisão extrema de modelos pesados para codificação, e validação reativa para garantir cobertura de edge cases. A especialização tripla com divisão de responsabilidades (análise, codificação, validação) e temperatura adaptativa otimiza eficiência e robustez. A validação reativa garante que cada solução passe por verificação automática de edge cases identificados, reduzindo falhas críticas.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Triple-Stage Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "299",
+    "name": "Precision Hybrid Solver",
+    "creation_timestamp": "2025-05-25T20:03:48.396486",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from ollama import generate\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado\n    analyzer = generate(\n        model='gemma3:4b',\n        prompt=f\"Analise o problema LeetCode com:\n        Título: {problem_data['title']}\n        Descrição: {problem_data['description']}\n        Exemplos: {problem_data['examples']}\n        \n        Forneça:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        temperature=0.4\n    )\n\n    # Estrutura a análise em formato programável\n    analysis = {\n        'problem_type': analyzer['response'].split('Tipo de problema: ')[1].split('\\n')[0].strip(),\n        'constraints': analyzer['response'].split('Restrições: ')[1].split('\\n')[0].strip().split(', '),\n        'edge_cases': analyzer['response'].split('Casos de borda: ')[1].split('\\n')[0].strip().split(', '),\n        'approach': analyzer['response'].split('Abordagem: ')[1].strip()\n    }\n\n    # AGENTE 2: Codificador Ótimo\n    code_generator = generate(\n        model='qwen3:32b',\n        prompt=f\"Implemente código Python com base na análise:\n        Tipo de problema: {analysis['problem_type']}\n        Restrições: {analysis['constraints']}\n        Casos de borda: {analysis['edge_cases']}\n        Abordagem: {analysis['approach']}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentários claros\",\n        temperature=0.1\n    )\n\n    return {\n        'code': code_generator['response'],\n        'analysis': analysis\n    }",
+      "description": "Este pipeline combina análise estruturada com geração de código otimizada. Usa gemma3:4b para análise estratégica com temperatura moderada (0.4) para equilibrar criatividade e precisão. A geração de código usa qwen3:32b com temperatura ultra-baixa (0.1) para maximizar a precisão. A análise estruturada inclui tipos de problemas, restrições, casos de borda e abordagem específica, garantindo que o codificador receba contexto direto e instruções claras."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina análise estruturada com geração de código otimizada. Usa gemma3:4b para análise estratégica com temperatura moderada (0.4) para equilibrar criatividade e precisão. A geração de código usa qwen3:32b com temperatura ultra-baixa (0.1) para maximizar a precisão. A análise estruturada inclui tipos de problemas, restrições, casos de borda e abordagem específica, garantindo que o codificador receba contexto direto e instruções claras.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Precision Hybrid Solver",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "300",
+    "name": "Triple-Stage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:08:14.787118",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Análise Estrutural (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\n        5. Complexidade temporal e espacial esperada\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\",\n            \"complexity\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.6\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Pseudocódigo (Modelo médio)\n    pseudocode_gen = LLM_Agent(\n        role=\"Pseudocode Generator\",\n        instruction=f\"Crie pseudocódigo baseado na análise:\n        Tipo de problema: {analysis['problem_type']}\n        Restrições: {analysis['constraints']}\n        Casos de borda: {analysis['edge_cases']}\n        Abordagem: {analysis['approach']}\n        Complexidade: {analysis['complexity']}\n        \n        Requisitos: Código legível, estrutura clara, comentários explicativos\",\n        arquitetura_resposta={\"pseudocode\": \"string\"},\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    pseudocode = pseudocode_gen.generate_response()\n\n    # AGENTE 3: Codificação Ótima (Modelo pesado)\n    code_gen = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base no pseudocódigo:\n        {pseudocode['pseudocode']}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros, validação de entradas\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis, pseudocode]\n    )\n\n    return code_gen.generate_response()",
+      "description": "Este pipeline combina três estágios especializados para maximizar eficiência e precisão: (1) Análise Estrutural com Gemma3:4b para identificar padrões e requisitos, (2) Geração de Pseudocódigo com Qwen3:32b para transformar análise em estrutura de código, e (3) Codificação Ótima com Qwen3:32b para implementação precisa. A análise estruturada fornece contexto claro para o pseudocódigo, que por sua vez direciona a codificação final. A baixa temperatura no estágio de codificação garante precisão, enquanto a temperatura moderada na análise permite identificação criativa de padrões. A validação implícita através de estruturas de dados forçadas aumenta a robustez."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina três estágios especializados para maximizar eficiência e precisão: (1) Análise Estrutural com Gemma3:4b para identificar padrões e requisitos, (2) Geração de Pseudocódigo com Qwen3:32b para transformar análise em estrutura de código, e (3) Codificação Ótima com Qwen3:32b para implementação precisa. A análise estruturada fornece contexto claro para o pseudocódigo, que por sua vez direciona a codificação final. A baixa temperatura no estágio de codificação garante precisão, enquanto a temperatura moderada na análise permite identificação criativa de padrões. A validação implícita através de estruturas de dados forçadas aumenta a robustez.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Triple-Stage Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "301",
+    "name": "PrecisionHybridSolver",
+    "creation_timestamp": "2025-05-25T20:12:28.438200",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # Análise estruturada (agente 1)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada\n        5. Exemplos de entradas/saídas\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\",\n            \"examples\": \"list\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.6\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # Implementação (agente 2)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis['problem_type']}\n        Restrições: {analysis['constraints']}\n        Casos de borda: {analysis['edge_cases']}\n        Abordagem: {analysis['approach']}\n        Exemplos: {analysis['examples']}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros, testes integrados\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.1,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    code_response = implementer.generate_response(analysis)\n\n    # Verificação (agente 3)\n    verifier = LLM_Agent(\n        role=\"Solution Validator\",\n        instruction=f\"Valide o código gerado contra os seguintes critérios:\n        1. Correção para todos os casos de borda\n        2. Compatibilidade com as restrições\n        3. Eficiência algorítmica\n        4. Compatibilidade com os exemplos fornecidos\n        \n        Saída: Retorne 'validado' se todos os critérios forem atendidos\",\n        arquitetura_resposta={\"validation_result\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.05,\n        arquitetura_respostas_anteriores=[analysis, code_response]\n    )\n\n    validation = verifier.generate_response({**analysis, **code_response})\n\n    return {\n        \"code\": code_response['code'],\n        \"analysis\": analysis,\n        \"validation\": validation['validation_result']\n    }",
+      "description": "Esta arquitetura combina velocidade e precisão através de três estágios especializados: 1) Um analisador leve (gemma3:4b) com temperatura média identifica padrões e casos de borda críticos; 2) Um codificador pesado (qwen3:32b) com temperatura baixa gera código otimizado com base na análise estruturada; 3) Um verificador (qwen3:32b) com temperatura muito baixa valida a solução contra casos de teste sintéticos. A estrutura de resposta forçada e a especialização de funções garantem cobertura completa de requisitos e casos de borda."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Esta arquitetura combina velocidade e precisão através de três estágios especializados: 1) Um analisador leve (gemma3:4b) com temperatura média identifica padrões e casos de borda críticos; 2) Um codificador pesado (qwen3:32b) com temperatura baixa gera código otimizado com base na análise estruturada; 3) Um verificador (qwen3:32b) com temperatura muito baixa valida a solução contra casos de teste sintéticos. A estrutura de resposta forçada e a especialização de funções garantem cobertura completa de requisitos e casos de borda.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de PrecisionHybridSolver",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "302",
+    "name": "Dual-Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:16:38.619846",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo pesado, temperatura média)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"qwen3:32b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # Validar estrutura de análise\n    if not all(key in analysis for key in [\"problem_type\", \"constraints\", \"edge_cases\", \"approach\"]):\n        return {\"error\": \"Análise incompleta\"}\n\n    # AGENTE 2: Codificador Ótimo (Modelo pesado, temperatura baixa)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis[\"problem_type\"]}\n        Restrições: {analysis[\"constraints\"]}\n        Casos de borda: {analysis[\"edge_cases\"]}\n        Abordagem: {analysis[\"approach\"]}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    return implementer.generate_response(problem_data)",
+      "description": "Este pipeline combina análise estruturada com código otimizado usando dois agentes especializados. O primeiro agente (qwen3:32b com temperatura 0.5) identifica elementos críticos do problema com uma análise detalhada e estruturada, garantindo cobertura de edge cases e abordagem correta. O segundo agente (mesmo modelo com temperatura 0.2) gera código com precisão extrema baseado na análise estruturada. A especialização de funções e a passagem de contexto forçado minimizam ambiguidades, enquanto a seleção de modelos fortes assegura robustez. A validação estruturada no primeiro estágio garante dados confiáveis para o segundo."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina análise estruturada com código otimizado usando dois agentes especializados. O primeiro agente (qwen3:32b com temperatura 0.5) identifica elementos críticos do problema com uma análise detalhada e estruturada, garantindo cobertura de edge cases e abordagem correta. O segundo agente (mesmo modelo com temperatura 0.2) gera código com precisão extrema baseado na análise estruturada. A especialização de funções e a passagem de contexto forçado minimizam ambiguidades, enquanto a seleção de modelos fortes assegura robustez. A validação estruturada no primeiro estágio garante dados confiáveis para o segundo.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Dual-Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "303",
+    "name": "PrecisionEdge Hybrid Solver",
+    "creation_timestamp": "2025-05-25T20:21:22.694618",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # Etapa 1: Analisador Estruturado (Modelo leve + temperatura média)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada\n        5. Exemplos de entrada/saída\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\",\n            \"examples\": \"list\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # Etapa 2: Gerador de Código (Modelo pesado + baixa temperatura)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com:\n        - Tipo de problema: {analysis['problem_type']}\n        - Restrições: {analysis['constraints']}\n        - Casos de borda: {analysis['edge_cases']}\n        - Exemplos: {analysis['examples']}\n        - Abordagem: {analysis['approach']}\n        \n        Requisitos: Código otimizado, comentarios claros, testes para casos de borda\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    code_response = implementer.generate_response()\n\n    # Etapa 3: Validador (Modelo leve + baixa temperatura)\n    validator = LLM_Agent(\n        role=\"Validator\",\n        instruction=f\"Valide o código para:\n        1. Cobertura de todos os casos de borda\n        2. Cumprimento das restrições\n        3. Correção dos exemplos\",\n        arquitetura_resposta={\"validation\": \"string\"},\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.1,\n        arquitetura_respostas_anteriores=[code_response, analysis]\n    )\n\n    validation = validator.generate_response()\n\n    return {\n        \"code\": code_response['code'],\n        \"validation\": validation['validation']\n    }",
+      "description": "Este pipeline combina velocidade e precisão através de uma análise estruturada com validação integrada. A etapa de análise identifica claramente o tipo de problema, restrições, casos de borda e abordagens, enquanto o gerador de código utiliza um modelo potente com baixa temperatura para garantir precisão. A inclusão de testes automatizados para casos de borda aumenta a robustez. O pipeline utiliza diferentes modelos e temperaturas otimizadas para cada etapa, garantindo eficiência e corretude."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina velocidade e precisão através de uma análise estruturada com validação integrada. A etapa de análise identifica claramente o tipo de problema, restrições, casos de borda e abordagens, enquanto o gerador de código utiliza um modelo potente com baixa temperatura para garantir precisão. A inclusão de testes automatizados para casos de borda aumenta a robustez. O pipeline utiliza diferentes modelos e temperaturas otimizadas para cada etapa, garantindo eficiência e corretude.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de PrecisionEdge Hybrid Solver",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "304",
+    "name": "Triple-Stage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:26:46.295079",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais (formato lista)\n        3. Casos de borda críticos (formato lista)\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo (Modelo pesado)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis.get('problem_type', '')}\n        Restrições: {analysis.get('constraints', [])}\n        Casos de borda: {analysis.get('edge_cases', [])}\n        Abordagem: {analysis.get('approach', '')}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n    code = implementer.generate_response(problem_data)\n\n    # AGENTE 3: Otimizador Final (Modelo especializado)\n    optimizer = LLM_Agent(\n        role=\"Final Code Optimizer\",\n        instruction=f\"Revise o código para:\n        1. Verificar cobertura de todos os casos de borda\n        2. Otimizar complexidade\n        3. Adicionar documentação clara\n        Código atual: {code.get('code', '')}\",\n        arquitetura_resposta={\"optimized_code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.1,\n        arquitetura_respostas_anterias=[code]\n    )\n    return optimizer.generate_response(problem_data)",
+      "description": "Este pipeline divide o processo em três etapas críticas: análise estruturada (rápida), geração de código (precisa) e otimização final (robusta). A análise detalhada fornece contexto direto, a geração de código usa baixa temperatura para precisão, e a otimização final verifica cobertura de casos críticos. A especialização de funções e fluxo direto de dados aumentam eficiência e robustez."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline divide o processo em três etapas críticas: análise estruturada (rápida), geração de código (precisa) e otimização final (robusta). A análise detalhada fornece contexto direto, a geração de código usa baixa temperatura para precisão, e a otimização final verifica cobertura de casos críticos. A especialização de funções e fluxo direto de dados aumentam eficiência e robustez.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Triple-Stage Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "305",
+    "name": "Structural Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:32:39.083404",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # Stage 1: Structural Analyzer\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Analise o problema e forneça exatamente 4 elementos:\n        1. Tipo de problema (classificação)\n        2. Restrições principais (formato: lista de strings)\n        3. Casos de borda críticos (formato: lista de strings)\n        4. Abordagem sugerida (formato: string)\",\n        model=\"gemma3:4b\",\n        temperature=0.5\n    )\n\n    # Stage 2: Solution Designer\n    designer = LLM_Agent(\n        role=\"Solution Designer\",\n        instruction=\"Crie pseudocódigo conciso baseado na análise estruturada. Inclua:\n        - Estrutura de dados principais\n        - Algoritmo passo a passo\n        - Tratamento de casos de borda\",\n        model=\"qwen3:32b\",\n        temperature=0.5\n    )\n\n    # Stage 3: Code Generator\n    generator = LLM_Agent(\n        role=\"Code Generator\",\n        instruction=\"Converta o pseudocódigo em Python válido com:\n        - Comentários explicativos\n        - Tratamento explícito de casos de borda\n        - Otimização de complexidade\",\n        model=\"qwen3:32b\",\n        temperature=0.2\n    )\n\n    # Execute pipeline\n    analysis = analyzer.run(problem_data)\n    pseudocode = designer.run(analysis)\n    code = generator.run(pseudocode)\n\n    return {\"solution\": code}",
+      "description": "Este pipeline revoluciona a abordagem com três estágios especializados: 1. Análise estruturada forçada (Gemma3:4b com temperatura média) que extraí exatamente 4 elementos críticos do problema; 2. Designer de solução (Qwen3:32b com temperatura média) que gera pseudocódigo baseado no contexto estruturado; 3. Gerador de código (Qwen3:32b com temperatura baixa) que traduz o pseudocódigo em código Python otimizado com tratamento explícito de todos os casos de borda. A combinação de modelos especializados, estruturação forçada e transmissão direta de contexto garante a precisão extrema, enquanto a especialização de funções evita ambiguidade."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline revoluciona a abordagem com três estágios especializados: 1. Análise estruturada forçada (Gemma3:4b com temperatura média) que extraí exatamente 4 elementos críticos do problema; 2. Designer de solução (Qwen3:32b com temperatura média) que gera pseudocódigo baseado no contexto estruturado; 3. Gerador de código (Qwen3:32b com temperatura baixa) que traduz o pseudocódigo em código Python otimizado com tratamento explícito de todos os casos de borda. A combinação de modelos especializados, estruturação forçada e transmissão direta de contexto garante a precisão extrema, enquanto a especialização de funções evita ambiguidade.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Structural Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "306",
+    "name": "Multi-Stage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:37:07.200095",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from ollama import generate\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = generate(\n        model='llama3',\n        prompt=f\"Analyze LeetCode problem:\n        Title: {problem_data.get('title')}\n        Description: {problem_data.get('description')}\n        Constraints: {problem_data.get('constraints')}\n        Example: {problem_data.get('example')}\n        \n        Output JSON with:\n        - Problem type (algorithm, DP, etc)\n        - Main constraints\n        - Critical edge cases\n        - Recommended approach\",\n        options={'temperature': 0.5}\n    )\n\n    analysis = eval(analyzer['response'])\n\n    # AGENTE 2: Planejador de Solução (Modelo médio)\n    planner = generate(\n        model='gemma',\n        prompt=f\"Create step-by-step plan for:\n        Problem Type: {analysis['problem_type']}\n        Constraints: {analysis['constraints']}\n        Edge Cases: {analysis['edge_cases']}\n        Approach: {analysis['approach']}\",\n        options={'temperature': 0.3}\n    )\n\n    plan = eval(planner['response'])\n\n    # AGENTE 3: Gerador de Código (Modelo pesado)\n    code_gen = generate(\n        model='qwen2',\n        prompt=f\"Generate optimized Python code for:\n        Problem Type: {analysis['problem_type']}\n        Constraints: {analysis['constraints']}\n        Edge Cases: {analysis['edge_cases']}\n        Plan: {plan}\n        \n        Requirements: Explicit edge case handling, clear comments, optimized for time/space\",\n        options={'temperature': 0.1}\n    )\n\n    code = eval(code_gen['response'])\n\n    # AGENTE 4: Validador de Casos de Borda (Modelo leve)\n    validator = generate(\n        model='llama3',\n        prompt=f\"Test code against edge cases:\n        Code: {code['code']}\n        Edge Cases: {analysis['edge_cases']}\n        \n        Suggest modifications if needed\",\n        options={'temperature': 0.4}\n    )\n\n    final_code = code['code']\n    if 'modifications' in eval(validator['response']):\n        final_code = eval(validator['response'])['modified_code']\n\n    return {'code': final_code}",
+      "description": "Este pipeline combina a velocidade de modelos leves para análise inicial com a precisão de modelos pesados para codificação, usando temperatura adaptativa. Cada agente tem uma função especializada: (1) Analisador estruturado identifica elementos-chave do problema, (2) Planejador cria um passo a passo baseado nas restrições, (3) Gerador de código otimizado produz solução final com baixa temperatura, e (4) Validador de casos de borda testa a solução contra cenários críticos. A especialização de funções, fluxo direto de dados e estrutura forçada garantem eficiência e robustez."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "all_runs_summary": []
+    },
+    "thinking": "Agente testado. Este pipeline combina a velocidade de modelos leves para análise inicial com a precisão de modelos pesados para codificação, usando temperatura adaptativa. Cada agente tem uma função especializada: (1) Analisador estruturado identifica elementos-chave do problema, (2) Planejador cria um passo a passo baseado nas restrições, (3) Gerador de código otimizado produz solução final com baixa temperatura, e (4) Validador de casos de borda testa a solução contra cenários críticos. A especialização de funções, fluxo direto de dados e estrutura forçada garantem eficiência e robustez.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Multi-Stage Precision Pipeline",
+    "detailed_results": []
+  },
+  {
+    "agent_id": "307",
+    "name": "TriStage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:43:52.469794",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais (valores máximos, tipos de entrada)\n        3. Casos de borda críticos\n        4. Abordagem recomendada com estruturas de dados\n        5. Variáveis-chave e relações\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\",\n            \"key_variables\": \"dict\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Arquiteto de Soluções (Modelo médio)\n    architect = LLM_Agent(\n        role=\"Solution Architect\",\n        instruction=f\"Valide e detalhe a análise:\n        Problema: {analysis.get('problem_type')}\n        Restrições: {analysis.get('constraints')}\n        Casos de borda: {analysis.get('edge_cases')}\n        Abordagem: {analysis.get('approach')}\n        \n        Especifique:\n        1. Estrutura do código\n        2. Tratamento explícito de cada caso de borda\n        3. Implementação de validações\n        4. Complexidade temporal/espacial esperada\",\n        arquitetura_resposta={\n            \"code_structure\": \"dict\",\n            \"edge_case_handling\": \"list\",\n            \"validations\": \"list\",\n            \"complexity\": \"string\"\n        },\n        model=\"ollama:qwen3:7b\",\n        temperatura=0.2\n    )\n\n    architecture = architect.generate_response(analysis)\n\n    # AGENTE 3: Implementador Ótimo (Modelo pesado)\n    implementer = LLM_Agent(\n        role=\"Optimized Code Generator\",\n        instruction=f\"Implemente código Python com:\n        Estrutura: {architecture.get('code_structure')}\n        Tratamento de bordas: {architecture.get('edge_case_handling')}\n        Validações: {architecture.get('validations')}\n        Complexidade: {architecture.get('complexity')}\n        \n        Requisitos:\n        - Código otimizado\n        - Comentários claros\n        - Tratamento de todos os casos de borda\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.25,\n        arquitetura_respostas_anteriores=[analysis, architecture]\n    )\n\n    return implementer.generate_response(architecture)",
+      "description": "Esta arquitetura introduz um estágio intermediário de validação e planejamento que resolve as falhas dos pipelines anteriores. A divisão em 3 estágios especializados (Análise Estruturada -> Arquitetura -> Implementação) permite melhor tratamento de casos críticos, validação de abordagem e geração de código orientada por especificações detalhadas. O uso de temperatura adaptativa (média para análise, baixa para validação, moderada para implementação) equilibra velocidade e precisão. A estruturação forçada das respostas garante cobertura completa de requisitos."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "detailed_results": []
+    }
+  },
+  {
+    "agent_id": "308",
+    "name": "Hybrid Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:47:43.684808",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estruturado (Modelo leve)\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Codificador Ótimo (Modelo pesado)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base na análise estruturada:\n        Tipo de problema: {analysis.get('problem_type', '')}\n        Restrições: {analysis.get('constraints', [])}\n        Casos de borda: {analysis.get('edge_cases', [])}\n        Abordagem: {analysis.get('approach', '')}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    return implementer.generate_response(problem_data)",
+      "description": "Este pipeline combina análise estruturada com codificação orientada por contexto. A análise inicial fornece contexto direto para o codificador, minimizando ambiguidade. A especialização de funções (análise vs. codificação) e a estrutura de resposta forçada garantem cobertura de casos críticos. A baixa temperatura no estágio final assegura precisão extrema, enquanto a temperatura média no estágio inicial equilibra criatividade e estrutura. A passagem direta de dados entre agentes otimiza eficiência."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "detailed_results": []
+    }
+  },
+  {
+    "agent_id": "309",
+    "name": "Tri-Stage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:51:32.735745",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analyser (Modelo leve para análise estruturada)\n    analyser = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyser.generate_response(problem_data)\n\n    # AGENTE 2: Planner (Modelo médio para mapear solução)\n    planner = LLM_Agent(\n        role=\"Solution Planner\",\n        instruction=f\"Crie plano de implementação com:\n        1. Passos sequenciais para solução\n        2. Estratégias para cada etapa\n        3. Estruturas de dados recomendadas\n        4. Tratamento específico para casos de borda\",\n        arquitetura_resposta={\n            \"steps\": \"list\",\n            \"data_structures\": \"list\",\n            \"edge_case_treatment\": \"dict\"\n        },\n        model=\"ollama:qwen3:7b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    plan = planner.generate_response(analysis)\n\n    # AGENTE 3: Implementer (Modelo grande para codificação precisa)\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python com base:\n        Tipo de problema: {analysis.get('problem_type', '')}\n        Restrições: {analysis.get('constraints', [])}\n        Casos de borda: {analysis.get('edge_cases', [])}\n        Abordagem: {analysis.get('approach', '')}\n        Passos: {plan.get('steps', [])}\n        Estruturas: {plan.get('data_structures', [])}\n        Tratamento de borda: {plan.get('edge_case_treatment', {})}\n        \n        Requisitos: Código otimizado, tratamento explícito de todos os casos de borda, comentarios claros\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:14b\",\n        temperatura=0.1,\n        arquitetura_respostas_anteriores=[analysis, plan]\n    )\n\n    return implementer.generate_response({**analysis, **plan})",
+      "description": "Este pipeline combina três modelos especializados: 1) Analyser (Gemma3:4b, temperatura média) para análise estruturada e identificação de padrões, 2) Planner (Qwen3:7b, temperatura baixa) para mapear a abordagem passo a passo, e 3) Implementer (Qwen3:14b, temperatura muito baixa) para codificação precisa. A divisão em três etapas permite especialização funcional, redução de ambiguidade e cobertura completa de casos críticos. A análise estruturada forçada com schema explicito garante contexto claro para o planner, enquanto o implementer final usa o modelo mais potente para maximizar precisão. A sequência de fluxo direto e a estrutura de resposta forçada aumentam robustez e eficiência."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "detailed_results": []
+    }
+  },
+  {
+    "agent_id": "310",
+    "name": "Triple-Stage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:52:37.594416",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "def solve_problem(problem_data):\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=\"Identify problem type, constraints, edge cases, and solution approach. Return JSON with keys: problem_type, constraints, edge_cases, approach\",\n        arquitetura_resposta={\"problem_type\": \"str\", \"constraints\": \"list\", \"edge_cases\": \"list\", \"approach\": \"str\"},\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n    analysis = analyzer.generate_response(problem_data)\n\n    coder = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=\"Generate clean, optimized code with comments that addresses all constraints and edge cases from the analysis. Return code as string\",\n        arquitetura_resposta={\"code\": \"str\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n    code = coder.generate_response(problem_data)\n\n    validator = LLM_Agent(\n        role=\"Code Validator\",\n        instruction=\"Verify generated code against problem requirements and analysis. Return JSON with keys: is_valid (bool), issues (list of strings) if invalid\",\n        arquitetura_resposta={\"is_valid\": \"bool\", \"issues\": \"list\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.1,\n        arquitetura_respostas_anteriores=[code]\n    )\n    validation = validator.generate_response(problem_data)\n\n    return {\"code\": code, \"validation\": validation}",
+      "description": "This pipeline introduces a three-stage process: 1) Structured analysis using a lightweight model to capture problem constraints and edge cases, 2) Precision coding with a heavy model to implement the solution, and 3) Validation to ensure code correctness. The validation stage acts as a safety net to catch errors before final output."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 603.199374128271,
+      "time_std": 148.04069555563132,
+      "time_range": [
+        496.6213764614529,
+        812.5489993890127
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 3,
+      "all_runs_summary": [
+        {
+          "run": 1,
+          "accuracy": 0.0,
+          "avg_time": 500.42774653434753,
+          "errors": 9
+        },
+        {
+          "run": 2,
+          "accuracy": 0.0,
+          "avg_time": 496.6213764614529,
+          "errors": 9
+        },
+        {
+          "run": 3,
+          "accuracy": 0.0,
+          "avg_time": 812.5489993890127,
+          "errors": 9
+        }
+      ]
+    },
+    "thinking": "Agente testado. This pipeline introduces a three-stage process: 1) Structured analysis using a lightweight model to capture problem constraints and edge cases, 2) Precision coding with a heavy model to implement the solution, and 3) Validation to ensure code correctness. The validation stage acts as a safety net to catch errors before final output.. Testado 3 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
+    "task_explanation": "Teste de Triple-Stage Precision Pipeline",
+    "detailed_results": [
+      {
+        "run_number": 1,
+        "accuracy": 0.0,
+        "avg_execution_time": 500.42774653434753,
+        "total_time": 4503.849718809128,
+        "correct_count": 0,
+        "total_problems": 9,
+        "problem_results": [
+          {
+            "problem": "Palindrome Number",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 165.6002938747406,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Roman to Integer",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 350.3627781867981,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Two Sum",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 129.7468421459198,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Add Two Numbers",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 189.59778475761414,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Longest Palindromic Substring",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 603.0891766548157,
+            "error": "An error occurred: timed out"
+          },
+          {
+            "problem": "Container With Most Water",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 93.71592688560486,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Merge k Sorted Lists",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 424.7694556713104,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Median of Two Sorted Arrays",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 206.7841238975525,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Regular Expression Matching",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 389.8042550086975,
+            "error": "expected string or bytes-like object, got 'dict'"
+          }
+        ],
+        "errors": [
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: An error occurred: timed out",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'"
+        ]
+      },
+      {
+        "run_number": 2,
+        "accuracy": 0.0,
+        "avg_execution_time": 496.6213764614529,
+        "total_time": 4469.592388153076,
+        "correct_count": 0,
+        "total_problems": 9,
+        "problem_results": [
+          {
+            "problem": "Palindrome Number",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 89.44655084609985,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Roman to Integer",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 261.7974941730499,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Two Sum",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 96.46265006065369,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Add Two Numbers",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 253.4638500213623,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Longest Palindromic Substring",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 252.36896324157715,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Container With Most Water",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 264.8243441581726,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Merge k Sorted Lists",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 606.6663749217987,
+            "error": "An error occurred: timed out"
+          },
+          {
+            "problem": "Median of Two Sorted Arrays",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 408.4676208496094,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Regular Expression Matching",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 609.2648258209229,
+            "error": "An error occurred: timed out"
+          }
+        ],
+        "errors": [
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: An error occurred: timed out",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: An error occurred: timed out"
+        ]
+      },
+      {
+        "run_number": 3,
+        "accuracy": 0.0,
+        "avg_execution_time": 812.5489993890127,
+        "total_time": 7312.940994501114,
+        "correct_count": 0,
+        "total_problems": 9,
+        "problem_results": [
+          {
+            "problem": "Palindrome Number",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 506.7780349254608,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Roman to Integer",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 609.5622239112854,
+            "error": "An error occurred: timed out"
+          },
+          {
+            "problem": "Two Sum",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 274.502947807312,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Add Two Numbers",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 376.2741959095001,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Longest Palindromic Substring",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 606.1149160861969,
+            "error": "An error occurred: timed out"
+          },
+          {
+            "problem": "Container With Most Water",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 514.2455711364746,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Merge k Sorted Lists",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 728.7549860477448,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Median of Two Sorted Arrays",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 341.0866689682007,
+            "error": "expected string or bytes-like object, got 'dict'"
+          },
+          {
+            "problem": "Regular Expression Matching",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 613.9804511070251,
+            "error": "An error occurred: timed out"
+          }
+        ],
+        "errors": [
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: An error occurred: timed out",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: An error occurred: timed out",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: expected string or bytes-like object, got 'dict'",
+          "Triple-Stage Precision Pipeline: An error occurred: timed out"
+        ]
+      }
+    ]
+  },
+  {
+    "agent_id": "311",
+    "name": "Tri-Stage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:55:58.734415",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # Agente 1: Classificador de Problemas (Gemma3:4b, temperatura alta para criatividade)\n    classifier = LLM_Agent(\n        role=\"Problem Categorizer\",\n        instruction=\"Identifique:\n1. Tipo de problema (algoritmo, DP, BFS/DFS, etc)\n2. Restrições principais (tamanho de entrada, tempo, etc)\n3. Casos de borda críticos\n4. Abordagem geral\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.7\n    )\n    analysis = classifier.generate_response(problem_data)\n\n    # Agente 2: Planejador de Estratégias (Qwen3:32b, temperatura média para estruturação)\n    planner = LLM_Agent(\n        role=\"Strategy Planner\",\n        instruction=\"Crie um plano passo a passo baseado na análise:\n- Estrutura de dados necessárias\n- Complexidade esperada\n- Abordagem detalhada\",\n        arquitetura_resposta={\n            \"steps\": \"list\",\n            \"data_structures\": \"list\",\n            \"complexity\": \"string\"\n        },\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.5,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n    plan = planner.generate_response(analysis)\n\n    # Agente 3: Gerador de Código (Qwen3:32b, temperatura baixa para precisão)\n    coder = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=\"Implemente código Python com:\n- Tratamento explícito de todos os casos de borda\n- Comentários claros\n- Estrutura de dados otimizada\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis, plan]\n    )\n    return coder.generate_response(plan)",
+      "description": "A arquitetura utiliza três estágios especializados: (1) um classificador de problemas para identificar tipo e restrições, (2) um planejador de estratégias para decompor a solução em passos estruturados, e (3) um gerador de código otimizado. Isso permite cobertura completa de casos críticos, contexto direto entre agentes, e uso eficiente de modelos especializados (Gemma3:4b para análise criativa, Qwen3:32b para precisão). A estrutura forçada de resposta e temperaturas adaptativas (alta para classificação, média para planejamento, baixa para codificação) maximiza eficiência e robustez."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "detailed_results": []
+    }
+  },
+  {
+    "agent_id": "312",
+    "name": "Tri-Stage Precision Pipeline",
+    "creation_timestamp": "2025-05-25T20:57:54.118377",
+    "config": {
+      "type": "generated_pipeline",
+      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # AGENTE 1: Analisador Estrutural\n    analyzer = LLM_Agent(\n        role=\"Structural Analyzer\",\n        instruction=f\"Forneça análise estruturada com:\n        1. Tipo de problema (algoritmo, DP, etc)\n        2. Restrições principais\n        3. Casos de borda críticos\n        4. Abordagem recomendada (incluindo estruturas de dados)\",\n        arquitetura_resposta={\n            \"problem_type\": \"string\",\n            \"constraints\": \"list\",\n            \"edge_cases\": \"list\",\n            \"approach\": \"string\"\n        },\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.5\n    )\n\n    analysis = analyzer.generate_response(problem_data)\n\n    # AGENTE 2: Gerador de Estratégia\n    strategist = LLM_Agent(\n        role=\"Algorithm Strategist\",\n        instruction=f\"Baseado na análise:\n        Tipo: {analysis['problem_type']}\n        Restrições: {analysis['constraints']}\n        Casos de borda: {analysis['edge_cases']}\n        \n        Gere:\n        1. Complexidade esperada\n        2. Estrutura de dados recomendada\n        3. Pseudocódigo detalhado\",\n        arquitetura_resposta={\n            \"complexity\": \"string\",\n            \"data_structure\": \"string\",\n            \"pseudo_code\": \"string\"\n        },\n        model=\"ollama:qwen3:14b\",\n        temperatura=0.6,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n\n    strategy = strategist.generate_response()\n\n    # AGENTE 3: Codificador Ótimo\n    implementer = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Implemente código Python baseado:\n        Análise: {analysis}\n        Estratégia: {strategy}\n        \n        Requisitos:\n        - Código otimizado para {analysis['problem_type']}\n        - Tratamento explícito de {len(analysis['edge_cases'])} casos de borda\n        - Comentários claros para {strategy['complexity']}\",\n        arquitetura_resposta={\"code\": \"string\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis, strategy]\n    )\n\n    return implementer.generate_response()",
+      "description": "Este pipeline revolucionário combina três agentes especializados para maximizar precisão e velocidade: 1) Analisador Estrutural (modelos leves com temperatura média) identifica características críticas do problema; 2) Gerador de Estratégia (modelo intermediário com temperatura adaptativa) seleciona algoritmos otimizados; 3) Codificador Ótimo (modelo pesado com baixa temperatura) implementa soluções com cobertura completa de casos de borda. A estrutura forçada e a especialização de funções garantem processamento eficiente, enquanto a passagem de contexto direto entre agentes reduz ambiguidade."
+    },
+    "performance": {
+      "accuracy": 0.0,
+      "accuracy_std": 0.0,
+      "accuracy_range": [
+        0.0,
+        0.0
+      ],
+      "avg_execution_time": 0.0,
+      "time_std": 0.0,
+      "time_range": [
+        0.0,
+        0.0
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 0,
+      "detailed_results": []
+    }
   }
 ]

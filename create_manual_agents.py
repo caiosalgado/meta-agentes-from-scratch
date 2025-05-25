@@ -155,12 +155,12 @@ def main():
     
     # Definir os 3 agentes
     agents = [
-        {
-            "name": "Simple Expert Solver",
-            "code": create_agent_1_simple(),
-            "description": "Agente simples com foco em eficiência e precisão",
-            "expected": "Alta performance"
-        },
+        # {
+        #     "name": "Simple Expert Solver",
+        #     "code": create_agent_1_simple(),
+        #     "description": "Agente simples com foco em eficiência e precisão",
+        #     "expected": "Alta performance"
+        # },
         {
             "name": "Complex Pipeline Solver", 
             "code": create_agent_2_complex(),

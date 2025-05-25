@@ -1098,5 +1098,339 @@
         ]
       }
     ]
+  },
+  {
+    "agent_id": "002",
+    "name": "Complex Pipeline Solver",
+    "creation_timestamp": "2025-05-25T02:23:39.284428",
+    "config": {
+      "type": "manual_pipeline",
+      "code": "\n# AGENTE 2: Over-engineered Complex Pipeline  \nfrom llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    '''Pipeline complexo com múltiplos agentes - pode ter overhead.'''\n    \n    # AGENTE 1: Analista\n    analyst = LLM_Agent(\n        role=\"Problem Analyst\", \n        instruction=f'''Analise este problema de programação em detalhes:\n        {problem_data.get(\"description\", \"\")}\n        \n        Identifique padrões, edge cases e estratégias de solução.''',\n        arquitetura_resposta={\"analysis\": \"Análise detalhada do problema\"},\n        model=\"ollama:gemma3:27b\",\n        temperatura=0.4\n    )\n    \n    analysis_result = analyst.generate_response(problem_data)\n    \n    # AGENTE 2: Arquiteto\n    architect = LLM_Agent(\n        role=\"Solution Architect\",\n        instruction=f'''Baseado nesta análise: {analysis_result.get(\"analysis\", \"\")}\n        \n        Crie uma arquitetura de solução detalhada.''',\n        arquitetura_resposta={\"architecture\": \"Arquitetura da solução\"},\n        model=\"ollama:qwen3:14b\", \n        temperatura=0.5,\n        arquitetura_respostas_anteriores=[analysis_result]\n    )\n    \n    architecture_result = architect.generate_response(problem_data)\n    \n    # AGENTE 3: Implementador\n    implementer = LLM_Agent(\n        role=\"Code Implementer\",\n        instruction=f'''Implemente esta solução:\n        Análise: {analysis_result.get(\"analysis\", \"\")}\n        Arquitetura: {architecture_result.get(\"architecture\", \"\")}\n        \n        Código Python final:''',\n        arquitetura_resposta={\"code\": \"Código Python implementado\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.3,\n        arquitetura_respostas_anteriores=[analysis_result, architecture_result]\n    )\n    \n    return implementer.generate_response(problem_data)\n",
+      "description": "Pipeline complexo com múltiplos agentes especializados"
+    },
+    "performance": {
+      "accuracy": 3.7037037037037037,
+      "accuracy_std": 5.237828008789241,
+      "accuracy_range": [
+        0.0,
+        11.11111111111111
+      ],
+      "avg_execution_time": 23.070920679304336,
+      "time_std": 30.447526528400953,
+      "time_range": [
+        1.4995225535498724,
+        66.13019863764445
+      ]
+    },
+    "testing_stats": {
+      "successful_runs": 0,
+      "total_runs": 3,
+      "all_runs_summary": [
+        {
+          "run": 1,
+          "accuracy": 11.11111111111111,
+          "avg_time": 66.13019863764445,
+          "errors": 8
+        },
+        {
+          "run": 2,
+          "accuracy": 0.0,
+          "avg_time": 1.5830408467186823,
+          "errors": 9
+        },
+        {
+          "run": 3,
+          "accuracy": 0.0,
+          "avg_time": 1.4995225535498724,
+          "errors": 9
+        }
+      ]
+    },
+    "thinking": "Agente testado. Pipeline complexo com múltiplos agentes especializados. Testado 3 vezes com 0 execuções bem-sucedidas. Acurácia média: 3.7%.",
+    "task_explanation": "Teste de Complex Pipeline Solver",
+    "detailed_results": [
+      {
+        "run_number": 1,
+        "accuracy": 11.11111111111111,
+        "avg_execution_time": 66.13019863764445,
+        "total_time": 595.1717877388,
+        "correct_count": 1,
+        "total_problems": 9,
+        "problem_results": [
+          {
+            "problem": "Palindrome Number",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 143.5295033454895,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  121
+                ],
+                "expected": true,
+                "actual": true,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  -121
+                ],
+                "expected": false,
+                "actual": false,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  10
+                ],
+                "expected": false,
+                "actual": false,
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Roman to Integer",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 385.8122990131378,
+            "error": "Resultado inválido"
+          },
+          {
+            "problem": "Two Sum",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 50.294718742370605,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Add Two Numbers",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 2.596616506576538,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Longest Palindromic Substring",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 2.6232004165649414,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Container With Most Water",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 2.504192590713501,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Merge k Sorted Lists",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 2.574349880218506,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Median of Two Sorted Arrays",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 2.5659263134002686,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Regular Expression Matching",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 2.670980930328369,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          }
+        ],
+        "errors": [
+          "Complex Pipeline Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+        ]
+      },
+      {
+        "run_number": 2,
+        "accuracy": 0.0,
+        "avg_execution_time": 1.5830408467186823,
+        "total_time": 14.24736762046814,
+        "correct_count": 0,
+        "total_problems": 9,
+        "problem_results": [
+          {
+            "problem": "Palindrome Number",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 2.6265196800231934,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Roman to Integer",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.3480665683746338,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Two Sum",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.5174212455749512,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Add Two Numbers",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.449906349182129,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Longest Palindromic Substring",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.514369249343872,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Container With Most Water",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.4561643600463867,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Merge k Sorted Lists",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.4900376796722412,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Median of Two Sorted Arrays",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.3363587856292725,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Regular Expression Matching",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.50852370262146,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          }
+        ],
+        "errors": [
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+        ]
+      },
+      {
+        "run_number": 3,
+        "accuracy": 0.0,
+        "avg_execution_time": 1.4995225535498724,
+        "total_time": 13.495702981948853,
+        "correct_count": 0,
+        "total_problems": 9,
+        "problem_results": [
+          {
+            "problem": "Palindrome Number",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.3942806720733643,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Roman to Integer",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.5939245223999023,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Two Sum",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.423417091369629,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Add Two Numbers",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.5056571960449219,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Longest Palindromic Substring",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.5324313640594482,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Container With Most Water",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.617037296295166,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Merge k Sorted Lists",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.361386775970459,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Median of Two Sorted Arrays",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.5727050304412842,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          },
+          {
+            "problem": "Regular Expression Matching",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 1.4948630332946777,
+            "error": "Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+          }
+        ],
+        "errors": [
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500",
+          "Complex Pipeline Solver: Ollama request failed: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+        ]
+      }
+    ]
   }
 ]

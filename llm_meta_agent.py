@@ -157,10 +157,87 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
         
         return "\n".join(examples)
     
+    def _identify_error_type(self, agent: Dict[str, Any]) -> str:
+        """Identifica tipo de erro baseado na performance do agente."""
+        accuracy = agent.get("performance", {}).get("accuracy", 0)
+        execution_time = agent.get("performance", {}).get("avg_execution_time", 0)
+        
+        if accuracy == 0:
+            return "Erro crítico - nenhuma resposta correta"
+        elif accuracy < 10:
+            return "Erro de lógica - respostas predominantemente incorretas"
+        elif execution_time > 10:
+            return "Erro de performance - tempo de execução excessivo"
+        elif accuracy < 30:
+            return "Erro de arquitetura - baixa acurácia geral"
+        else:
+            return "Erro não classificado"
+    
+    def _extract_detailed_errors(self, agent: Dict[str, Any]) -> str:
+        """
+        Extrai erros detalhados de um agente para incluir no prompt do meta-agente.
+        
+        Args:
+            agent: Dicionário com dados do agente
+            
+        Returns:
+            String formatada com erros detalhados
+        """
+        error_details = ""
+        detailed_results = agent.get("detailed_results", [])
+        
+        if not detailed_results:
+            return error_details
+        
+        # Coletar erros de diferentes fontes
+        all_errors = []
+        
+        # 1. Erros gerais do run (se existir)
+        for run_result in detailed_results:
+            if "errors" in run_result and run_result["errors"]:
+                all_errors.extend(run_result["errors"])
+            
+            # 2. Erros específicos de problemas
+            problem_results = run_result.get("problem_results", [])
+            for problem in problem_results:
+                if "error" in problem and problem["error"]:
+                    all_errors.append(f"Problema '{problem.get('problem', 'Unknown')}': {problem['error']}")
+                
+                # 3. Erros de test cases específicos
+                if "details" in problem:
+                    for detail in problem["details"]:
+                        if "error" in detail and detail["error"]:
+                            # Extrair apenas a parte mais relevante do erro
+                            error_msg = detail['error']
+                            if "Traceback" in error_msg:
+                                # Pegar apenas a última linha do traceback
+                                lines = error_msg.strip().split('\n')
+                                error_msg = lines[-1] if lines else error_msg
+                            all_errors.append(f"Test case: {error_msg}")
+        
+        # Remover duplicatas mantendo ordem
+        unique_errors = []
+        seen = set()
+        for error in all_errors:
+            if error not in seen:
+                unique_errors.append(error)
+                seen.add(error)
+        
+        # Limitar a 5 erros mais representativos
+        if unique_errors:
+            error_details = "\n\n**ERROS ESPECÍFICOS ENCONTRADOS:**\n"
+            for i, error in enumerate(unique_errors[:5], 1):
+                error_details += f"{i}. {error}\n"
+            
+            if len(unique_errors) > 5:
+                error_details += f"... e mais {len(unique_errors) - 5} erros similares\n"
+        
+        return error_details
+
     def get_non_functional_examples(self, max_n: int = 5) -> str:
         """
         Retorna exemplos de agentes não funcionais para evitar padrões problemáticos.
-        Inclui erros brutos do meta-agente para melhor aprendizado.
+        Inclui erros detalhados para melhor aprendizado do meta-agente.
         """
         if not self.agent_history:
             return "Nenhum histórico disponível."
@@ -182,17 +259,20 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
         # Pegar até max_n exemplos
         selected_agents = non_functional_agents[:max_n]
         
-        # Formatar exemplos com erros brutos quando disponíveis
+        # Formatar exemplos com erros detalhados
         examples = []
         for agent in selected_agents:
             error_type = self._identify_error_type(agent)
             
-            # Verificar se há erro bruto disponível
-            error_details = ""
+            # Extrair erros detalhados usando nova função
+            error_details = self._extract_detailed_errors(agent)
+            
+            # Verificar se há erro bruto disponível (código original)
+            raw_error_details = ""
             detailed_results = agent.get("detailed_results", [])
             if detailed_results and len(detailed_results) > 0 and "raw_error_details" in detailed_results[0]:
                 error_info = detailed_results[0]["raw_error_details"]
-                error_details = f"""
+                raw_error_details = f"""
 
 **CÓDIGO PROBLEMÁTICO GERADO PELO META-AGENTE:**
 ```python
@@ -207,29 +287,13 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
             example = f"""
 ## {agent['name']} (ID: {agent['agent_id']}) - PROBLEMÁTICO
 **Performance:** Acurácia: {agent['performance']['accuracy']:.1f}%
-**Tipo de Erro:** {error_type}{error_details}
+**Tipo de Erro:** {error_type}{error_details}{raw_error_details}
 **Problema Identificado:** {agent['thinking']}
 **Configuração que NÃO funcionou:** {json.dumps(agent['config'], indent=2, ensure_ascii=False)}
 """
             examples.append(example)
         
         return "\n".join(examples)
-    
-    def _identify_error_type(self, agent: Dict[str, Any]) -> str:
-        """Identifica tipo de erro baseado na performance do agente."""
-        accuracy = agent.get("performance", {}).get("accuracy", 0)
-        execution_time = agent.get("performance", {}).get("avg_execution_time", 0)
-        
-        if accuracy == 0:
-            return "Erro crítico - nenhuma resposta correta"
-        elif accuracy < 10:
-            return "Erro de lógica - respostas predominantemente incorretas"
-        elif execution_time > 10:
-            return "Erro de performance - tempo de execução excessivo"
-        elif accuracy < 30:
-            return "Erro de arquitetura - baixa acurácia geral"
-        else:
-            return "Erro não classificado"
     
     def _build_meta_prompt(self, task_explicacao: str) -> str:
         """Constrói prompt para o meta-agente."""

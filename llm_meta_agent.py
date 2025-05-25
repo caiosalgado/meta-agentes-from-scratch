@@ -7,6 +7,9 @@ Gera pipelines inteligentes de agentes LLM para maximizar performance
 import json
 import time
 import random
+import fcntl
+import tempfile
+import shutil
 from datetime import datetime
 from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
@@ -57,14 +60,14 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
             "ollama:phi4:latest", 
             "ollama:gemma3:4b", 
             "ollama:gemma3:12b", 
-            "ollama:gemma3:27b", 
+            # "ollama:gemma3:27b", 
             "ollama:gemma3:1b",
             "ollama:qwen3:1.7b",
             "ollama:qwen3:4b", 
             "ollama:qwen3:14b", 
-            "ollama:qwen3:30b", 
-            "ollama:qwen3:32b",
-            "ollama:devstral",
+            # "ollama:qwen3:30b", 
+            # "ollama:qwen3:32b",
+            # "ollama:devstral",
             "ollama:deepseek-r1:1.5b",
             "ollama:deepseek-r1:8b",
             "ollama:deepseek-r1:14b"
@@ -83,6 +86,43 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
             "code": "Código Python executável para criar e executar o(s) agente(s)"
         }
     
+    def _acquire_file_lock(self, timeout: int = 30) -> bool:
+        """Adquire lock exclusivo no arquivo JSON."""
+        start_time = time.time()
+        lock_file = self.history_file.with_suffix('.lock')
+        
+        while time.time() - start_time < timeout:
+            try:
+                self.lock_fd = open(lock_file, 'w')
+                fcntl.flock(self.lock_fd.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                
+                # Escrever info do processo no lock
+                import os
+                self.lock_fd.write(f"PID:{os.getpid()}:TIME:{time.time()}\n")
+                self.lock_fd.flush()
+                
+                return True
+            except (IOError, OSError):
+                if hasattr(self, 'lock_fd'):
+                    self.lock_fd.close()
+                # Aguardar com jitter para evitar thundering herd
+                time.sleep(0.1 + random.uniform(0, 0.1))
+        
+        return False
+    
+    def _release_file_lock(self):
+        """Libera o lock do arquivo."""
+        try:
+            if hasattr(self, 'lock_fd'):
+                fcntl.flock(self.lock_fd.fileno(), fcntl.LOCK_UN)
+                self.lock_fd.close()
+            
+            lock_file = self.history_file.with_suffix('.lock')
+            if lock_file.exists():
+                lock_file.unlink()
+        except Exception as e:
+            print(f"⚠️ Erro ao liberar lock: {e}")
+    
     def _load_history(self) -> List[Dict[str, Any]]:
         """Carrega histórico de agentes do arquivo JSON."""
         if self.history_file.exists():
@@ -95,20 +135,79 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
         return []
     
     def _save_history(self):
-        """Salva histórico de agentes no arquivo JSON."""
+        """Salva histórico com file locking e operação atômica."""
+        if not self._acquire_file_lock():
+            print("⚠️ Não foi possível adquirir lock para salvar histórico")
+            return False
+        
         try:
-            with open(self.history_file, 'w', encoding='utf-8') as f:
-                json.dump(self.agent_history, f, indent=2, ensure_ascii=False)
+            # Recarregar dados mais recentes antes de salvar (merge)
+            current_data = []
+            if self.history_file.exists():
+                try:
+                    with open(self.history_file, 'r', encoding='utf-8') as f:
+                        current_data = json.load(f)
+                except Exception as e:
+                    print(f"⚠️ Erro ao recarregar histórico: {e}")
+                    current_data = []
+            
+            # Merge: adicionar apenas agentes que não existem
+            existing_ids = {agent.get("agent_id") for agent in current_data}
+            new_agents_added = 0
+            
+            for agent in self.agent_history:
+                if agent.get("agent_id") not in existing_ids:
+                    current_data.append(agent)
+                    new_agents_added += 1
+            
+            # Salvar usando operação atômica (write + rename)
+            temp_file = self.history_file.with_suffix('.tmp')
+            
+            with open(temp_file, 'w', encoding='utf-8') as f:
+                json.dump(current_data, f, indent=2, ensure_ascii=False)
+            
+            # Operação atômica: renomear arquivo temporário
+            shutil.move(str(temp_file), str(self.history_file))
+            
+            # Atualizar histórico local
+            self.agent_history = current_data
+            
+            if new_agents_added > 0:
+                print(f"💾 Histórico salvo: {new_agents_added} novos agentes adicionados")
+            
+            return True
+            
         except Exception as e:
-            print(f"Erro ao salvar histórico: {e}")
+            print(f"❌ Erro ao salvar histórico: {e}")
+            return False
+        finally:
+            self._release_file_lock()
     
     def _generate_agent_id(self) -> str:
-        """Gera ID único para novo agente."""
-        if not self.agent_history:
-            return "001"
-        
-        last_id = max([int(agent.get("agent_id", "0")) for agent in self.agent_history])
-        return f"{last_id + 1:03d}"
+        """Gera ID único de forma thread-safe."""
+        # Recarregar histórico para pegar IDs mais recentes
+        if self._acquire_file_lock(timeout=10):
+            try:
+                current_history = []
+                if self.history_file.exists():
+                    with open(self.history_file, 'r', encoding='utf-8') as f:
+                        current_history = json.load(f)
+                
+                if not current_history:
+                    return "001"
+                
+                last_id = max([int(agent.get("agent_id", "0")) for agent in current_history])
+                return f"{last_id + 1:03d}"
+                
+            except Exception as e:
+                print(f"⚠️ Erro ao gerar ID: {e}")
+                # Fallback: usar timestamp
+                return f"{int(time.time()) % 1000:03d}"
+            finally:
+                self._release_file_lock()
+        else:
+            # Fallback se não conseguir lock: usar timestamp
+            return f"{int(time.time()) % 1000:03d}"
     
     def get_functional_examples(self, top_n: int = 3) -> str:
         """

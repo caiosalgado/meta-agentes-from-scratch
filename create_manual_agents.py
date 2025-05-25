@@ -188,8 +188,7 @@ def main():
         # ✅ USA FUNÇÃO CENTRALIZADA DO META-AGENTE
         test_results = meta_agent.test_agent_pipeline(
             agent_code=agent_config['code'],
-            agent_name=agent_config['name'],
-            runs=5  # 5 execuções para agentes manuais
+            agent_name=agent_config['name']
         )
         
         # ✅ USA FUNÇÃO CENTRALIZADA PARA SALVAR NO HISTÓRICO
@@ -206,7 +205,7 @@ def main():
     
     # Resumo final
     print("\n" + "="*80)
-    print("🔍 📊 RESUMO FINAL DOS TESTES (5 EXECUÇÕES CADA)")
+    print(f"🔍 📊 RESUMO FINAL DOS TESTES ({meta_agent.DEFAULT_TEST_RUNS} EXECUÇÕES CADA)")
     print("="*80)
     
     for i, result in enumerate(results):
@@ -219,7 +218,7 @@ def main():
         print(f"   ✅ Execuções OK: {result['successful_runs']}/{result['total_runs']}")
         print()
     
-    print(f"🔍 🎉 Processo concluído! {len(results)} agentes criados e testados 5 vezes cada.")
+    print(f"🔍 🎉 Processo concluído! {len(results)} agentes criados e testados {meta_agent.DEFAULT_TEST_RUNS} vezes cada.")
     print("🔍 📈 Agora o meta-agente tem histórico estatisticamente confiável para aprender!")
 
 if __name__ == "__main__":

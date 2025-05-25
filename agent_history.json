@@ -2,3351 +2,500 @@
   {
     "agent_id": "001",
     "name": "Simple Expert Solver",
-    "creation_timestamp": "2025-05-24T19:49:29.984340",
+    "creation_timestamp": "2025-05-25T01:15:58.108483",
     "config": {
       "type": "manual_pipeline",
       "code": "\n# AGENTE 1: Simple Expert Solver\nfrom llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    '''Agente simples com foco em eficiência e precisão.'''\n    \n    # Criar agente especializado\n    agent = LLM_Agent(\n        role=\"Python Coding Expert\",\n        instruction=f'''Você é um especialista em Python. \n        \n        Resolva este problema de programação:\n        {problem_data.get(\"description\", \"\")}\n        \n        Retorne apenas código Python limpo e eficiente.''',\n        arquitetura_resposta={\"code\": \"Código Python completo\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2  # Baixa para precisão\n    )\n    \n    # Executar e retornar resultado\n    return agent.generate_response(problem_data)\n",
       "description": "Agente simples com foco em eficiência e precisão"
     },
     "performance": {
-      "accuracy": 86.66666666666666,
-      "accuracy_std": 16.329931618554525,
+      "accuracy": 40.74074074074074,
+      "accuracy_std": 5.237828008789243,
       "accuracy_range": [
-        66.66666666666666,
-        100.0
+        33.33333333333333,
+        44.44444444444444
       ],
-      "avg_execution_time": 120.25161261558533,
-      "time_std": 25.420327476172208,
+      "avg_execution_time": 215.44988266626993,
+      "time_std": 33.38469590595722,
       "time_range": [
-        79.18332823117574,
-        154.20130276679993
+        183.68795092900595,
+        261.5829831759135
       ]
     },
     "testing_stats": {
-      "successful_runs": 3,
-      "total_runs": 5,
+      "successful_runs": 0,
+      "total_runs": 3,
       "all_runs_summary": [
         {
           "run": 1,
-          "accuracy": 100.0,
-          "avg_time": 123.60109798113506,
-          "errors": 0
+          "accuracy": 33.33333333333333,
+          "avg_time": 261.5829831759135,
+          "errors": 6
         },
         {
           "run": 2,
-          "accuracy": 66.66666666666666,
-          "avg_time": 135.80104279518127,
-          "errors": 1
+          "accuracy": 44.44444444444444,
+          "avg_time": 183.68795092900595,
+          "errors": 5
         },
         {
           "run": 3,
-          "accuracy": 100.0,
-          "avg_time": 108.47129130363464,
-          "errors": 0
-        },
-        {
-          "run": 4,
-          "accuracy": 66.66666666666666,
-          "avg_time": 154.20130276679993,
-          "errors": 1
-        },
-        {
-          "run": 5,
-          "accuracy": 100.0,
-          "avg_time": 79.18332823117574,
-          "errors": 0
+          "accuracy": 44.44444444444444,
+          "avg_time": 201.07871389389038,
+          "errors": 5
         }
       ]
     },
-    "thinking": "Agente testado. Agente simples com foco em eficiência e precisão. Testado 5 vezes com 3 execuções bem-sucedidas. Acurácia média: 86.7%.",
+    "thinking": "Agente testado. Agente simples com foco em eficiência e precisão. Testado 3 vezes com 0 execuções bem-sucedidas. Acurácia média: 40.7%.",
     "task_explanation": "Teste de Simple Expert Solver",
     "detailed_results": [
       {
         "run_number": 1,
-        "accuracy": 100.0,
-        "avg_execution_time": 123.60109798113506,
-        "total_time": 370.80329394340515,
+        "accuracy": 33.33333333333333,
+        "avg_execution_time": 261.5829831759135,
+        "total_time": 2354.2468485832214,
         "correct_count": 3,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 102.225656747818,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 207.9270520210266,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 60.65058517456055,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": [
-                  0,
-                  1
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": [
-                  1,
-                  2
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": [
-                  0,
-                  1
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": [
-                  1,
-                  2
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": [
-                  1,
-                  2
-                ],
-                "correct": true,
-                "error": null
-              }
-            ]
-          }
-        ],
-        "errors": []
-      },
-      {
-        "run_number": 2,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 135.80104279518127,
-        "total_time": 407.4031283855438,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 141.74168705940247,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 194.85190320014954,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 70.80953812599182,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpu02bp_m7.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp_8u915xl.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmptuxdfonc.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpaznbk37t.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp53phcgl9.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Simple Expert Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 3,
-        "accuracy": 100.0,
-        "avg_execution_time": 108.47129130363464,
-        "total_time": 325.41387391090393,
-        "correct_count": 3,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 70.20672106742859,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 174.4443998336792,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 80.76275300979614,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": [
-                  0,
-                  1
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": [
-                  1,
-                  2
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": [
-                  0,
-                  1
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": [
-                  1,
-                  2
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": [
-                  1,
-                  2
-                ],
-                "correct": true,
-                "error": null
-              }
-            ]
-          }
-        ],
-        "errors": []
-      },
-      {
-        "run_number": 4,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 154.20130276679993,
-        "total_time": 462.6039083003998,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 223.47102117538452,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 179.99219417572021,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 59.140692949295044,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpmsufeupb.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpucmkzre4.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpjtp2oegl.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpi3t2s30o.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp6h9ikm_3.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Simple Expert Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 5,
-        "accuracy": 100.0,
-        "avg_execution_time": 79.18332823117574,
-        "total_time": 237.54998469352722,
-        "correct_count": 3,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 61.91115999221802,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 113.18677353858948,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 62.45205116271973,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": [
-                  0,
-                  1
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": [
-                  1,
-                  2
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": [
-                  0,
-                  1
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": [
-                  1,
-                  2
-                ],
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": [
-                  1,
-                  2
-                ],
-                "correct": true,
-                "error": null
-              }
-            ]
-          }
-        ],
-        "errors": []
-      }
-    ]
-  },
-  {
-    "agent_id": "002",
-    "name": "Complex Pipeline Solver",
-    "creation_timestamp": "2025-05-24T20:42:55.757815",
-    "config": {
-      "type": "manual_pipeline",
-      "code": "\n# AGENTE 2: Over-engineered Complex Pipeline  \nfrom llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    '''Pipeline complexo com múltiplos agentes - pode ter overhead.'''\n    \n    # AGENTE 1: Analista\n    analyst = LLM_Agent(\n        role=\"Problem Analyst\", \n        instruction=f'''Analise este problema de programação em detalhes:\n        {problem_data.get(\"description\", \"\")}\n        \n        Identifique padrões, edge cases e estratégias de solução.''',\n        arquitetura_resposta={\"analysis\": \"Análise detalhada do problema\"},\n        model=\"ollama:gemma3:27b\",\n        temperatura=0.4\n    )\n    \n    analysis_result = analyst.generate_response(problem_data)\n    \n    # AGENTE 2: Arquiteto\n    architect = LLM_Agent(\n        role=\"Solution Architect\",\n        instruction=f'''Baseado nesta análise: {analysis_result.get(\"analysis\", \"\")}\n        \n        Crie uma arquitetura de solução detalhada.''',\n        arquitetura_resposta={\"architecture\": \"Arquitetura da solução\"},\n        model=\"ollama:qwen3:14b\", \n        temperatura=0.5,\n        arquitetura_respostas_anteriores=[analysis_result]\n    )\n    \n    architecture_result = architect.generate_response(problem_data)\n    \n    # AGENTE 3: Implementador\n    implementer = LLM_Agent(\n        role=\"Code Implementer\",\n        instruction=f'''Implemente esta solução:\n        Análise: {analysis_result.get(\"analysis\", \"\")}\n        Arquitetura: {architecture_result.get(\"architecture\", \"\")}\n        \n        Código Python final:''',\n        arquitetura_resposta={\"code\": \"Código Python implementado\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.3,\n        arquitetura_respostas_anteriores=[analysis_result, architecture_result]\n    )\n    \n    return implementer.generate_response(problem_data)\n",
-      "description": "Pipeline complexo com múltiplos agentes especializados"
-    },
-    "performance": {
-      "accuracy": 53.33333333333333,
-      "accuracy_std": 26.666666666666664,
-      "accuracy_range": [
-        0.0,
-        66.66666666666666
-      ],
-      "avg_execution_time": 213.60504118601483,
-      "time_std": 38.0102201884943,
-      "time_range": [
-        167.62870891888937,
-        281.4678334395091
-      ]
-    },
-    "testing_stats": {
-      "successful_runs": 0,
-      "total_runs": 5,
-      "all_runs_summary": [
-        {
-          "run": 1,
-          "accuracy": 0.0,
-          "avg_time": 281.4678334395091,
-          "errors": 3
-        },
-        {
-          "run": 2,
-          "accuracy": 66.66666666666666,
-          "avg_time": 215.97481775283813,
-          "errors": 1
-        },
-        {
-          "run": 3,
-          "accuracy": 66.66666666666666,
-          "avg_time": 167.62870891888937,
-          "errors": 1
-        },
-        {
-          "run": 4,
-          "accuracy": 66.66666666666666,
-          "avg_time": 191.35506176948547,
-          "errors": 1
-        },
-        {
-          "run": 5,
-          "accuracy": 66.66666666666666,
-          "avg_time": 211.59878404935202,
-          "errors": 1
-        }
-      ]
-    },
-    "thinking": "Agente testado. Pipeline complexo com múltiplos agentes especializados. Testado 5 vezes com 0 execuções bem-sucedidas. Acurácia média: 53.3%.",
-    "task_explanation": "Teste de Complex Pipeline Solver",
-    "detailed_results": [
-      {
-        "run_number": 1,
-        "accuracy": 0.0,
-        "avg_execution_time": 281.4678334395091,
-        "total_time": 844.4035003185272,
-        "correct_count": 0,
-        "total_problems": 3,
+        "total_problems": 9,
         "problem_results": [
           {
             "problem": "Palindrome Number",
             "success": false,
             "accuracy": 0,
-            "execution_time": 384.3798360824585,
+            "execution_time": 300.149126291275,
             "error": "Resultado inválido"
           },
           {
             "problem": "Roman to Integer",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 127.3600561618805,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  "III"
+                ],
+                "expected": 3,
+                "actual": 3,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  "LVIII"
+                ],
+                "expected": 58,
+                "actual": 58,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  "MCMXCIV"
+                ],
+                "expected": 1994,
+                "actual": 1994,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 4,
+                "input": [
+                  "IV"
+                ],
+                "expected": 4,
+                "actual": 4,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 5,
+                "input": [
+                  "IX"
+                ],
+                "expected": 9,
+                "actual": 9,
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Two Sum",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 57.50125503540039,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    2,
+                    7,
+                    11,
+                    15
+                  ],
+                  9
+                ],
+                "expected": [
+                  0,
+                  1
+                ],
+                "actual": [
+                  0,
+                  1
+                ],
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    3,
+                    2,
+                    4
+                  ],
+                  6
+                ],
+                "expected": [
+                  1,
+                  2
+                ],
+                "actual": [
+                  1,
+                  2
+                ],
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  [
+                    3,
+                    3
+                  ],
+                  6
+                ],
+                "expected": [
+                  0,
+                  1
+                ],
+                "actual": [
+                  0,
+                  1
+                ],
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Add Two Numbers",
+            "success": false,
+            "accuracy": 0.0,
+            "execution_time": 187.06097507476807,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    2,
+                    4,
+                    3
+                  ],
+                  [
+                    5,
+                    6,
+                    4
+                  ]
+                ],
+                "expected": [
+                  7,
+                  0,
+                  8
+                ],
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpe3jijuw2.py\", line 29, in <module>\n    result = __init__(*input_args)\n             ^^^^^^^^\nNameError: name '__init__' is not defined"
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    0
+                  ],
+                  [
+                    0
+                  ]
+                ],
+                "expected": [
+                  0
+                ],
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmphd6mv_84.py\", line 29, in <module>\n    result = __init__(*input_args)\n             ^^^^^^^^\nNameError: name '__init__' is not defined"
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  [
+                    9,
+                    9,
+                    9,
+                    9,
+                    9,
+                    9,
+                    9
+                  ],
+                  [
+                    9,
+                    9,
+                    9,
+                    9
+                  ]
+                ],
+                "expected": [
+                  8,
+                  9,
+                  9,
+                  9,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp7jika3kw.py\", line 29, in <module>\n    result = __init__(*input_args)\n             ^^^^^^^^\nNameError: name '__init__' is not defined"
+              }
+            ]
+          },
+          {
+            "problem": "Longest Palindromic Substring",
             "success": false,
             "accuracy": 0,
-            "execution_time": 343.7993142604828,
-            "error": "Resultado inválido"
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 116.22434997558594,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpekd37_d5.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmphu3qc_ug.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp_y_okwcw.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpdjcjtbcd.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpweg63c9x.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Complex Pipeline Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
-          "Complex Pipeline Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
-          "Complex Pipeline Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 2,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 215.97481775283813,
-        "total_time": 647.9244532585144,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 199.60181617736816,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 266.51564598083496,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 181.80699110031128,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpgi2k4tgx.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmprmhc56vg.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp_n75fo77.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp3qrui65c.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpfdkhm74x.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Complex Pipeline Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 3,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 167.62870891888937,
-        "total_time": 502.8861267566681,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 123.68107485771179,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 215.17341899871826,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 164.03163290023804,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpld1laa5c.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpcusezrt_.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpum980974.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpmzzcbubw.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpq7qoud6_.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Complex Pipeline Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 4,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 191.35506176948547,
-        "total_time": 574.0651853084564,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 191.52664518356323,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 212.16488909721375,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 170.37365102767944,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp67gfrkwi.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmplz_pi5q5.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp9y4va0at.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpe4pv5c4s.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpjn714196.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Complex Pipeline Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 5,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 211.59878404935202,
-        "total_time": 634.796352148056,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 220.16407918930054,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 292.08781909942627,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 122.54445385932922,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpnvrohvdp.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp2_t6dvye.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp34902_bi.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpzfjagq4_.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp5gczhde9.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Complex Pipeline Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      }
-    ]
-  },
-  {
-    "agent_id": "003",
-    "name": "Expert Debate Solver",
-    "creation_timestamp": "2025-05-24T21:32:15.653629",
-    "config": {
-      "type": "manual_pipeline",
-      "code": "\n# AGENTE 3: Expert Debate Solver\nfrom llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    '''Dois experts debatem, um terceiro decide - abordagem intermediária.'''\n    \n    # EXPERT 1: Abordagem Algorítmica\n    expert1 = LLM_Agent(\n        role=\"Algorithm Expert\",\n        instruction=f'''Você é um especialista em algoritmos. \n        \n        Resolva este problema focando em eficiência algorítmica:\n        {problem_data.get(\"description\", \"\")}\n        \n        Priorize complexidade temporal e espacial.''',\n        arquitetura_resposta={\"solution\": \"Solução algorítmica\", \"reasoning\": \"Raciocínio\"},\n        model=\"ollama:qwen3:30b\",\n        temperatura=0.3\n    )\n    \n    # EXPERT 2: Abordagem Prática  \n    expert2 = LLM_Agent(\n        role=\"Practical Coder\",\n        instruction=f'''Você é um programador prático.\n        \n        Resolva este problema focando em simplicidade e legibilidade:\n        {problem_data.get(\"description\", \"\")}\n        \n        Priorize código limpo e funcionais.''',\n        arquitetura_resposta={\"solution\": \"Solução prática\", \"reasoning\": \"Raciocínio\"},\n        model=\"ollama:gemma3:12b\", \n        temperatura=0.4\n    )\n    \n    # Executar ambos experts\n    solution1 = expert1.generate_response(problem_data)\n    solution2 = expert2.generate_response(problem_data)\n    \n    # JUIZ: Decide entre as duas soluções\n    judge = LLM_Agent(\n        role=\"Technical Judge\",\n        instruction=f'''Avalie estas duas soluções e escolha/combine a melhor:\n        \n        Solução Algorítmica: {solution1.get(\"solution\", \"\")}\n        Raciocínio 1: {solution1.get(\"reasoning\", \"\")}\n        \n        Solução Prática: {solution2.get(\"solution\", \"\")}  \n        Raciocínio 2: {solution2.get(\"reasoning\", \"\")}\n        \n        Retorne a melhor solução final.''',\n        arquitetura_resposta={\"code\": \"Código Python final escolhido\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[solution1, solution2]\n    )\n    \n    return judge.generate_response(problem_data)\n",
-      "description": "Dois experts debatem, um juiz decide"
-    },
-    "performance": {
-      "accuracy": 53.33333333333333,
-      "accuracy_std": 26.666666666666664,
-      "accuracy_range": [
-        0.0,
-        66.66666666666666
-      ],
-      "avg_execution_time": 197.222456518809,
-      "time_std": 84.34117528257384,
-      "time_range": [
-        125.02482716242473,
-        335.8875579039256
-      ]
-    },
-    "testing_stats": {
-      "successful_runs": 0,
-      "total_runs": 5,
-      "all_runs_summary": [
-        {
-          "run": 1,
-          "accuracy": 66.66666666666666,
-          "avg_time": 139.11991461118063,
-          "errors": 1
-        },
-        {
-          "run": 2,
-          "accuracy": 66.66666666666666,
-          "avg_time": 255.1518655618032,
-          "errors": 1
-        },
-        {
-          "run": 3,
-          "accuracy": 66.66666666666666,
-          "avg_time": 125.02482716242473,
-          "errors": 1
-        },
-        {
-          "run": 4,
-          "accuracy": 66.66666666666666,
-          "avg_time": 130.9281173547109,
-          "errors": 1
-        },
-        {
-          "run": 5,
-          "accuracy": 0.0,
-          "avg_time": 335.8875579039256,
-          "errors": 3
-        }
-      ]
-    },
-    "thinking": "Agente testado. Dois experts debatem, um juiz decide. Testado 5 vezes com 0 execuções bem-sucedidas. Acurácia média: 53.3%.",
-    "task_explanation": "Teste de Expert Debate Solver",
-    "detailed_results": [
-      {
-        "run_number": 1,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 139.11991461118063,
-        "total_time": 417.35974383354187,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 201.05616784095764,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 140.6149458885193,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 75.68863010406494,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp5qn4m6gl.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp0_o6zlat.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpd8h4fpzx.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpfke705az.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpnaxz5ce2.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Expert Debate Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 2,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 255.1518655618032,
-        "total_time": 765.4555966854095,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 573.1194739341736,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 122.655925989151,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 69.68019676208496,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp7uzvx6n7.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpj7l3ja_j.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpzotqe87_.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpswtz9w9l.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp6f1e3n5c.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Expert Debate Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 3,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 125.02482716242473,
-        "total_time": 375.07448148727417,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 192.16511917114258,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 105.60080218315125,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 77.30856013298035,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmplxjq6nqs.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpyxiddh39.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp3jrzm3wo.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpy3disb03.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpk2iky3sd.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Expert Debate Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 4,
-        "accuracy": 66.66666666666666,
-        "avg_execution_time": 130.9281173547109,
-        "total_time": 392.7843520641327,
-        "correct_count": 2,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 151.96703696250916,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  121
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  -121
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  10
-                ],
-                "expected": false,
-                "actual": false,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  0
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  12321
-                ],
-                "expected": true,
-                "actual": true,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Roman to Integer",
-            "success": true,
-            "accuracy": 100.0,
-            "execution_time": 147.0295979976654,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  "III"
-                ],
-                "expected": 3,
-                "actual": 3,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  "LVIII"
-                ],
-                "expected": 58,
-                "actual": 58,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  "MCMXCIV"
-                ],
-                "expected": 1994,
-                "actual": 1994,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  "IV"
-                ],
-                "expected": 4,
-                "actual": 4,
-                "correct": true,
-                "error": null
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  "IX"
-                ],
-                "expected": 9,
-                "actual": 9,
-                "correct": true,
-                "error": null
-              }
-            ]
-          },
-          {
-            "problem": "Two Sum",
-            "success": false,
-            "accuracy": 0.0,
-            "execution_time": 93.78771710395813,
-            "details": [
-              {
-                "test_case": 1,
-                "input": [
-                  [
-                    2,
-                    7,
-                    11,
-                    15
-                  ],
-                  9
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpzdloa8hx.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 2,
-                "input": [
-                  [
-                    3,
-                    2,
-                    4
-                  ],
-                  6
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp4a4dtky5.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 3,
-                "input": [
-                  [
-                    3,
-                    3
-                  ],
-                  6
-                ],
-                "expected": [
-                  0,
-                  1
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpj_lknkp7.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp7mu0dahg.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
-                "input": [
-                  [
-                    2,
-                    5,
-                    5,
-                    11
-                  ],
-                  10
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpvutab8wj.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              }
-            ]
-          }
-        ],
-        "errors": [
-          "Expert Debate Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
-        ]
-      },
-      {
-        "run_number": 5,
-        "accuracy": 0.0,
-        "avg_execution_time": 335.8875579039256,
-        "total_time": 1007.6626737117767,
-        "correct_count": 0,
-        "total_problems": 3,
-        "problem_results": [
-          {
-            "problem": "Palindrome Number",
-            "success": false,
-            "accuracy": 0,
-            "execution_time": 600.0404286384583,
+            "execution_time": 600.0274398326874,
             "error": "An error occurred: timed out"
           },
           {
-            "problem": "Roman to Integer",
+            "problem": "Container With Most Water",
+            "success": false,
+            "accuracy": 0.0,
+            "execution_time": 36.44153380393982,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    1,
+                    8,
+                    6,
+                    2,
+                    5,
+                    4,
+                    8,
+                    3,
+                    7
+                  ]
+                ],
+                "expected": 49,
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpbpkczixo.py\", line 2, in <module>\n    def maxArea(height: List[int]) -> int:\n                        ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    1,
+                    1
+                  ]
+                ],
+                "expected": 1,
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpul_0pavt.py\", line 2, in <module>\n    def maxArea(height: List[int]) -> int:\n                        ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
+              }
+            ]
+          },
+          {
+            "problem": "Merge k Sorted Lists",
             "success": false,
             "accuracy": 0,
-            "execution_time": 330.0873122215271,
+            "execution_time": 355.03666615486145,
             "error": "Resultado inválido"
+          },
+          {
+            "problem": "Median of Two Sorted Arrays",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 90.7029881477356,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    1,
+                    3
+                  ],
+                  [
+                    2
+                  ]
+                ],
+                "expected": 2.0,
+                "actual": 2.0,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    1,
+                    2
+                  ],
+                  [
+                    3,
+                    4
+                  ]
+                ],
+                "expected": 2.5,
+                "actual": 2.5,
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Regular Expression Matching",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 599.9668080806732,
+            "error": "An error occurred: timed out"
+          }
+        ],
+        "errors": [
+          "Simple Expert Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
+          "Simple Expert Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)",
+          "Simple Expert Solver: An error occurred: timed out",
+          "Simple Expert Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)",
+          "Simple Expert Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
+          "Simple Expert Solver: An error occurred: timed out"
+        ]
+      },
+      {
+        "run_number": 2,
+        "accuracy": 44.44444444444444,
+        "avg_execution_time": 183.68795092900595,
+        "total_time": 1653.1915583610535,
+        "correct_count": 4,
+        "total_problems": 9,
+        "problem_results": [
+          {
+            "problem": "Palindrome Number",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 58.867111921310425,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  121
+                ],
+                "expected": true,
+                "actual": true,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  -121
+                ],
+                "expected": false,
+                "actual": false,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  10
+                ],
+                "expected": false,
+                "actual": false,
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Roman to Integer",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 177.66409015655518,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  "III"
+                ],
+                "expected": 3,
+                "actual": 3,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  "LVIII"
+                ],
+                "expected": 58,
+                "actual": 58,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  "MCMXCIV"
+                ],
+                "expected": 1994,
+                "actual": 1994,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 4,
+                "input": [
+                  "IV"
+                ],
+                "expected": 4,
+                "actual": 4,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 5,
+                "input": [
+                  "IX"
+                ],
+                "expected": 9,
+                "actual": 9,
+                "correct": true,
+                "error": null
+              }
+            ]
           },
           {
             "problem": "Two Sum",
             "success": false,
             "accuracy": 0.0,
-            "execution_time": 77.53493285179138,
+            "execution_time": 50.428955078125,
             "details": [
               {
                 "test_case": 1,
@@ -3365,7 +514,7 @@
                 ],
                 "actual": null,
                 "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp18uhzno9.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmphqt0f6zu.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
               },
               {
                 "test_case": 2,
@@ -3383,7 +532,7 @@
                 ],
                 "actual": null,
                 "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp6c0tslge.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp0x8v0sjr.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
               },
               {
                 "test_case": 3,
@@ -3400,150 +549,554 @@
                 ],
                 "actual": null,
                 "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpczetklnx.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpwotzpkdd.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
+              }
+            ]
+          },
+          {
+            "problem": "Add Two Numbers",
+            "success": false,
+            "accuracy": 0.0,
+            "execution_time": 139.6996579170227,
+            "details": [
               {
-                "test_case": 4,
-                "input": [
-                  [
-                    1,
-                    5,
-                    3
-                  ],
-                  8
-                ],
-                "expected": [
-                  1,
-                  2
-                ],
-                "actual": null,
-                "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpaf_hpog9.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
-              },
-              {
-                "test_case": 5,
+                "test_case": 1,
                 "input": [
                   [
                     2,
-                    5,
-                    5,
-                    11
+                    4,
+                    3
                   ],
-                  10
+                  [
+                    5,
+                    6,
+                    4
+                  ]
                 ],
                 "expected": [
-                  1,
-                  2
+                  7,
+                  0,
+                  8
                 ],
                 "actual": null,
                 "correct": false,
-                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp_btzl7yn.py\", line 2, in <module>\n    def twoSum(nums: List[int], target: int) -> List[int]:\n                     ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp_klmc9pr.py\", line 31, in <module>\n    result = __init__(*input_args)\n             ^^^^^^^^\nNameError: name '__init__' is not defined"
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    0
+                  ],
+                  [
+                    0
+                  ]
+                ],
+                "expected": [
+                  0
+                ],
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpga1rjx5j.py\", line 31, in <module>\n    result = __init__(*input_args)\n             ^^^^^^^^\nNameError: name '__init__' is not defined"
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  [
+                    9,
+                    9,
+                    9,
+                    9,
+                    9,
+                    9,
+                    9
+                  ],
+                  [
+                    9,
+                    9,
+                    9,
+                    9
+                  ]
+                ],
+                "expected": [
+                  8,
+                  9,
+                  9,
+                  9,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmplnb29b6r.py\", line 31, in <module>\n    result = __init__(*input_args)\n             ^^^^^^^^\nNameError: name '__init__' is not defined"
+              }
+            ]
+          },
+          {
+            "problem": "Longest Palindromic Substring",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 600.0252439975739,
+            "error": "An error occurred: timed out"
+          },
+          {
+            "problem": "Container With Most Water",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 75.65601015090942,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    1,
+                    8,
+                    6,
+                    2,
+                    5,
+                    4,
+                    8,
+                    3,
+                    7
+                  ]
+                ],
+                "expected": 49,
+                "actual": 49,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    1,
+                    1
+                  ]
+                ],
+                "expected": 1,
+                "actual": 1,
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Merge k Sorted Lists",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 302.05227494239807,
+            "error": "Resultado inválido"
+          },
+          {
+            "problem": "Median of Two Sorted Arrays",
+            "success": false,
+            "accuracy": 0.0,
+            "execution_time": 117.9136130809784,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    1,
+                    3
+                  ],
+                  [
+                    2
+                  ]
+                ],
+                "expected": 2.0,
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpkvvveb0h.py\", line 2, in <module>\n    def findMedianSortedArrays(nums1: List[int], nums2: List[int]) -> float:\n                                      ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    1,
+                    2
+                  ],
+                  [
+                    3,
+                    4
+                  ]
+                ],
+                "expected": 2.5,
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmp9koqk6to.py\", line 2, in <module>\n    def findMedianSortedArrays(nums1: List[int], nums2: List[int]) -> float:\n                                      ^^^^\nNameError: name 'List' is not defined. Did you mean: 'list'?"
+              }
+            ]
+          },
+          {
+            "problem": "Regular Expression Matching",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 130.88460111618042,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  "aa",
+                  "a"
+                ],
+                "expected": false,
+                "actual": false,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  "aa",
+                  "a*"
+                ],
+                "expected": true,
+                "actual": true,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  "ab",
+                  ".*"
+                ],
+                "expected": true,
+                "actual": true,
+                "correct": true,
+                "error": null
               }
             ]
           }
         ],
         "errors": [
-          "Expert Debate Solver: An error occurred: timed out",
-          "Expert Debate Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
-          "Expert Debate Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
+          "Simple Expert Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)",
+          "Simple Expert Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)",
+          "Simple Expert Solver: An error occurred: timed out",
+          "Simple Expert Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
+          "Simple Expert Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)"
+        ]
+      },
+      {
+        "run_number": 3,
+        "accuracy": 44.44444444444444,
+        "avg_execution_time": 201.07871389389038,
+        "total_time": 1809.7084250450134,
+        "correct_count": 4,
+        "total_problems": 9,
+        "problem_results": [
+          {
+            "problem": "Palindrome Number",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 56.23524022102356,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  121
+                ],
+                "expected": true,
+                "actual": true,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  -121
+                ],
+                "expected": false,
+                "actual": false,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  10
+                ],
+                "expected": false,
+                "actual": false,
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Roman to Integer",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 346.49339509010315,
+            "error": "Resultado inválido"
+          },
+          {
+            "problem": "Two Sum",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 44.59980869293213,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    2,
+                    7,
+                    11,
+                    15
+                  ],
+                  9
+                ],
+                "expected": [
+                  0,
+                  1
+                ],
+                "actual": [
+                  0,
+                  1
+                ],
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    3,
+                    2,
+                    4
+                  ],
+                  6
+                ],
+                "expected": [
+                  1,
+                  2
+                ],
+                "actual": [
+                  1,
+                  2
+                ],
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  [
+                    3,
+                    3
+                  ],
+                  6
+                ],
+                "expected": [
+                  0,
+                  1
+                ],
+                "actual": [
+                  0,
+                  1
+                ],
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Add Two Numbers",
+            "success": false,
+            "accuracy": 0.0,
+            "execution_time": 165.56673574447632,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    2,
+                    4,
+                    3
+                  ],
+                  [
+                    5,
+                    6,
+                    4
+                  ]
+                ],
+                "expected": [
+                  7,
+                  0,
+                  8
+                ],
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmphcqj3wj8.py\", line 32, in <module>\n    result = __init__(*input_args)\n             ^^^^^^^^\nNameError: name '__init__' is not defined"
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    0
+                  ],
+                  [
+                    0
+                  ]
+                ],
+                "expected": [
+                  0
+                ],
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmpoj6v_v1v.py\", line 32, in <module>\n    result = __init__(*input_args)\n             ^^^^^^^^\nNameError: name '__init__' is not defined"
+              },
+              {
+                "test_case": 3,
+                "input": [
+                  [
+                    9,
+                    9,
+                    9,
+                    9,
+                    9,
+                    9,
+                    9
+                  ],
+                  [
+                    9,
+                    9,
+                    9,
+                    9
+                  ]
+                ],
+                "expected": [
+                  8,
+                  9,
+                  9,
+                  9,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "actual": null,
+                "correct": false,
+                "error": "Traceback (most recent call last):\n  File \"/var/folders/q7/4nwpz4n10yx5pm1_6qxb6_c00000gn/T/tmph9cq4eft.py\", line 32, in <module>\n    result = __init__(*input_args)\n             ^^^^^^^^\nNameError: name '__init__' is not defined"
+              }
+            ]
+          },
+          {
+            "problem": "Longest Palindromic Substring",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 302.5001449584961,
+            "error": "Resultado inválido"
+          },
+          {
+            "problem": "Container With Most Water",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 64.02239298820496,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    1,
+                    8,
+                    6,
+                    2,
+                    5,
+                    4,
+                    8,
+                    3,
+                    7
+                  ]
+                ],
+                "expected": 49,
+                "actual": 49,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    1,
+                    1
+                  ]
+                ],
+                "expected": 1,
+                "actual": 1,
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Merge k Sorted Lists",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 386.3312041759491,
+            "error": "Resultado inválido"
+          },
+          {
+            "problem": "Median of Two Sorted Arrays",
+            "success": true,
+            "accuracy": 100.0,
+            "execution_time": 100.80498003959656,
+            "details": [
+              {
+                "test_case": 1,
+                "input": [
+                  [
+                    1,
+                    3
+                  ],
+                  [
+                    2
+                  ]
+                ],
+                "expected": 2.0,
+                "actual": 2.0,
+                "correct": true,
+                "error": null
+              },
+              {
+                "test_case": 2,
+                "input": [
+                  [
+                    1,
+                    2
+                  ],
+                  [
+                    3,
+                    4
+                  ]
+                ],
+                "expected": 2.5,
+                "actual": 2.5,
+                "correct": true,
+                "error": null
+              }
+            ]
+          },
+          {
+            "problem": "Regular Expression Matching",
+            "success": false,
+            "accuracy": 0,
+            "execution_time": 343.15452313423157,
+            "error": "Resultado inválido"
+          }
+        ],
+        "errors": [
+          "Simple Expert Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
+          "Simple Expert Solver: Código falhou em 100.0% dos testes (acurácia: 0.0%)",
+          "Simple Expert Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
+          "Simple Expert Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'",
+          "Simple Expert Solver: Resultado inválido - retornou <class 'dict'> ao invés de dict com 'code'"
         ]
       }
     ]
-  },
-  {
-    "agent_id": "004",
-    "name": "Hierarchical Optimized Solver",
-    "creation_timestamp": "2025-05-24T22:47:37.003796",
-    "config": {
-      "type": "generated_pipeline",
-      "code": "\nfrom llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # ANALISTA: Identifica padrões e edge cases\n    analyst = LLM_Agent(\n        role=\"Problem Analyst\",\n        instruction=f\"Analise este problema LeetCode: {problem_data['description']}. \n        Identifique restrições, padrões, e casos de borda\",\n        arquitetura_resposta={\"analysis\": \"Análise estruturada\"},\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.4\n    )\n    analysis = analyst.generate_response(problem_data)\n\n    # GERADOR: Cria solução com modelo pesado\n    generator = LLM_Agent(\n        role=\"Code Generator\",\n        instruction=f\"Gere solução Python para: {problem_data['description']}\n        Baseado nesta análise: {analysis['analysis']}\n        Priorize eficiência e cobertura de casos\",\n        arquitetura_resposta={\"code\": \"Código Python final\"},\n        model=\"ollama:qwen3:30b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n    code = generator.generate_response(problem_data)\n\n    # REVISOR: Verifica robustez e otimiza\n    reviewer = LLM_Agent(\n        role=\"Code Reviewer\",\n        instruction=f\"Revise este código: {code['code']}\n        Verifique: edge cases, eficiência, legibilidade. \n        Retorne a versão otimizada\",\n        arquitetura_resposta={\"optimized_code\": \"Código aprimorado\"},\n        model=\"ollama:qwen3:14b\",\n        temperatura=0.3,\n        arquitetura_respostas_anteriores=[analysis, code]\n    )\n    final_code = reviewer.generate_response(problem_data)\n\n    return {\n        \"solution\": final_code['optimized_code'],\n        \"analysis\": analysis['analysis']\n    }\n",
-      "description": "Combinando análise estrutural com geração focada e revisão estratégica. Usa modelos leves para análise inicial e modelos pesados para tarefas críticas. Mantém pipeline curto com apenas 3 agentes especializados: analista (gemma3:4b para velocidade), gerador (qwen3:30b para precisão), e revisor (qwen3:14b para equilíbrio). Usa baixa temperatura para gerador e média para revisor, otimizando tradeoff entre velocidade e qualidade. A hierarquia reduz overhead de comunicação entre agentes."
-    },
-    "performance": {
-      "accuracy": 0.0,
-      "accuracy_std": 0.0,
-      "accuracy_range": [
-        0.0,
-        0.0
-      ],
-      "avg_execution_time": 0.0,
-      "time_std": 0.0,
-      "time_range": [
-        0.0,
-        0.0
-      ]
-    },
-    "testing_stats": {
-      "successful_runs": 0,
-      "total_runs": 0,
-      "all_runs_summary": []
-    },
-    "thinking": "Agente testado. Combinando análise estrutural com geração focada e revisão estratégica. Usa modelos leves para análise inicial e modelos pesados para tarefas críticas. Mantém pipeline curto com apenas 3 agentes especializados: analista (gemma3:4b para velocidade), gerador (qwen3:30b para precisão), e revisor (qwen3:14b para equilíbrio). Usa baixa temperatura para gerador e média para revisor, otimizando tradeoff entre velocidade e qualidade. A hierarquia reduz overhead de comunicação entre agentes.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
-    "task_explanation": "Teste de Hierarchical Optimized Solver",
-    "detailed_results": []
-  },
-  {
-    "agent_id": "005",
-    "name": "Dynamic Hierarchical Optimizer",
-    "creation_timestamp": "2025-05-24T22:49:19.207725",
-    "config": {
-      "type": "generated_pipeline",
-      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # ANALISTA: Identifica padrões e edge cases com modelo leve\n    analyst = LLM_Agent(\n        role=\"Problem Analyst\",\n        instruction=f\"Analise este problema LeetCode: {problem_data['description']}. \n        Identifique restrições, padrões, e casos de borda\",\n        arquitetura_resposta={\"analysis\": \"Análise estruturada\"},\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.4\n    )\n    analysis = analyst.generate_response(problem_data)\n\n    # GERADOR: Cria solução com modelo pesado e baixa temperatura\n    generator = LLM_Agent(\n        role=\"Code Generator\",\n        instruction=f\"Gere solução Python para: {problem_data['description']}\n        Baseado nesta análise: {analysis['analysis']}\n        Priorize eficiência e cobertura de casos\",\n        arquitetura_resposta={\"code\": \"Código Python final\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n    code = generator.generate_response(problem_data)\n\n    # REVISOR: Verifica robustez e otimiza com modelo intermediário\n    reviewer = LLM_Agent(\n        role=\"Code Reviewer\",\n        instruction=f\"Revise este código: {code['code']}\n        Verifique: edge cases, eficiência, legibilidade. \n        Retorne a versão otimizada\",\n        arquitetura_resposta={\"optimized_code\": \"Código aprimorado\"},\n        model=\"ollama:qwen3:14b\",\n        temperatura=0.3,\n        arquitetura_respostas_anteriores=[analysis, code]\n    )\n    final_code = reviewer.generate_response(problem_data)\n\n    return {\n        \"solution\": final_code['optimized_code'],\n        \"analysis\": analysis['analysis']\n    }",
-      "description": "Combina a velocidade de modelos leves com a precisão de modelos pesados em uma hierarquia eficiente. Usa gemma3:4b para análise rápida de problemas, qwen3:32b para geração precisa de código com baixa temperatura, e qwen3:14b para revisão estratégica com temperatura equilibrada. A hierarquia reduz overhead de comunicação e mantém o pipeline curto, enquanto a especialização otimiza cada etapa para cobrir edge cases e garantir robustez. A combinação de modelos diferentes para diferentes funções maximiza a eficiência geral."
-    },
-    "performance": {
-      "accuracy": 0.0,
-      "accuracy_std": 0.0,
-      "accuracy_range": [
-        0.0,
-        0.0
-      ],
-      "avg_execution_time": 0.0,
-      "time_std": 0.0,
-      "time_range": [
-        0.0,
-        0.0
-      ]
-    },
-    "testing_stats": {
-      "successful_runs": 0,
-      "total_runs": 0,
-      "all_runs_summary": []
-    },
-    "thinking": "Agente testado. Combina a velocidade de modelos leves com a precisão de modelos pesados em uma hierarquia eficiente. Usa gemma3:4b para análise rápida de problemas, qwen3:32b para geração precisa de código com baixa temperatura, e qwen3:14b para revisão estratégica com temperatura equilibrada. A hierarquia reduz overhead de comunicação e mantém o pipeline curto, enquanto a especialização otimiza cada etapa para cobrir edge cases e garantir robustez. A combinação de modelos diferentes para diferentes funções maximiza a eficiência geral.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
-    "task_explanation": "Teste de Dynamic Hierarchical Optimizer",
-    "detailed_results": []
-  },
-  {
-    "agent_id": "006",
-    "name": "SpeedOptimized Hierarchy",
-    "creation_timestamp": "2025-05-24T22:51:15.439922",
-    "config": {
-      "type": "generated_pipeline",
-      "code": "from llm_agent import LLM_Agent\n\ndef solve_problem(problem_data):\n    # ANALISADOR: Identifica padrões e edge cases com modelo leve\n    analyzer = LLM_Agent(\n        role=\"Rapid Problem Analyzer\",\n        instruction=f\"Analise este problema LeetCode: {problem_data['description']}\n        Identifique: 1) Padrões do problema 2) Restrições 3) Casos de borda\",\n        arquitetura_resposta={\"analysis\": \"Análise estruturada\"},\n        model=\"ollama:gemma3:4b\",\n        temperatura=0.4\n    )\n    analysis = analyzer.generate_response(problem_data)\n\n    # GERADOR: Cria solução com modelo pesado e baixa temperatura\n    generator = LLM_Agent(\n        role=\"Precision Code Generator\",\n        instruction=f\"Gere solução Python para: {problem_data['description']}\n        Baseado nesta análise: {analysis['analysis']}\n        Priorize: 1) Corretude 2) Eficiência 3) Cobertura de casos\",\n        arquitetura_resposta={\"code\": \"Código Python final\"},\n        model=\"ollama:qwen3:32b\",\n        temperatura=0.2,\n        arquitetura_respostas_anteriores=[analysis]\n    )\n    code = generator.generate_response(problem_data)\n\n    # REVISOR: Verifica robustez e otimiza com modelo intermediário\n    reviewer = LLM_Agent(\n        role=\"Strategic Code Optimizer\",\n        instruction=f\"Revise este código: {code['code']}\n        Verifique: 1) Edge cases 2) Eficiência 3) Legibilidade\n        Retorne a versão otimizada\",\n        arquitetura_resposta={\"optimized_code\": \"Código aprimorado\"},\n        model=\"ollama:qwen3:14b\",\n        temperatura=0.3,\n        arquitetura_respostas_anteriores=[analysis, code]\n    )\n    final_code = reviewer.generate_response(problem_data)\n\n    return {\n        \"solution\": final_code['optimized_code'],\n        \"analysis\": analysis['analysis']\n    }",
-      "description": "Combina velocidade de modelos leves com precisão de modelos pesados em uma estrutura hierárquica eficiente. O analisador rápido (gemma3:4b) identifica padrões e casos de borda em milissegundos. O gerador (qwen3:32b) com baixa temperatura garante precisão crítica, enquanto o revisor (qwen3:14b) com temperatura equilibrada assegura robustez sem adicionar overhead significativo. A comunicação direta entre os agentes reduz latência, e a especialização rigorosa de cada etapa maximiza a eficiência geral."
-    },
-    "performance": {
-      "accuracy": 0.0,
-      "accuracy_std": 0.0,
-      "accuracy_range": [
-        0.0,
-        0.0
-      ],
-      "avg_execution_time": 0.0,
-      "time_std": 0.0,
-      "time_range": [
-        0.0,
-        0.0
-      ]
-    },
-    "testing_stats": {
-      "successful_runs": 0,
-      "total_runs": 0,
-      "all_runs_summary": []
-    },
-    "thinking": "Agente testado. Combina velocidade de modelos leves com precisão de modelos pesados em uma estrutura hierárquica eficiente. O analisador rápido (gemma3:4b) identifica padrões e casos de borda em milissegundos. O gerador (qwen3:32b) com baixa temperatura garante precisão crítica, enquanto o revisor (qwen3:14b) com temperatura equilibrada assegura robustez sem adicionar overhead significativo. A comunicação direta entre os agentes reduz latência, e a especialização rigorosa de cada etapa maximiza a eficiência geral.. Testado 0 vezes com 0 execuções bem-sucedidas. Acurácia média: 0.0%.",
-    "task_explanation": "Teste de SpeedOptimized Hierarchy",
-    "detailed_results": []
   }
 ]

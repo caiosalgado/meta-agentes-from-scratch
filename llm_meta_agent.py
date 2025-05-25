@@ -22,6 +22,9 @@ class LLM_Meta_Agent:
     combinando múltiplos agentes para maximizar acurácia.
     """
     
+    # CONFIGURAÇÕES CENTRALIZADAS
+    DEFAULT_TEST_RUNS = 3  # Número padrão de execuções para teste de agentes
+    
     # SYSTEM PROMPT ÚNICO - SOURCE OF TRUTH
     SYSTEM_PROMPT = """Você é um especialista em engenharia de agentes de IA.
 
@@ -55,16 +58,22 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
             "ollama:gemma3:4b", 
             "ollama:gemma3:12b", 
             "ollama:gemma3:27b", 
+            "ollama:gemma3:1b",
+            "ollama:qwen3:1.7b",
             "ollama:qwen3:4b", 
             "ollama:qwen3:14b", 
             "ollama:qwen3:30b", 
-            "ollama:qwen3:32b"
+            "ollama:qwen3:32b",
+            "ollama:devstral",
+            "ollama:deepseek-r1:1.5b",
+            "ollama:deepseek-r1:8b",
+            "ollama:deepseek-r1:14b"
         ]
         
         # Cliente AI para o meta-agente
         self.client = ai.Client()
         self.client.configure({
-            "ollama": {"timeout": 600}
+            "ollama": {"timeout": 500}
         })
         
         # Arquitetura de resposta do meta-agente
@@ -151,15 +160,21 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
     def get_non_functional_examples(self, max_n: int = 5) -> str:
         """
         Retorna exemplos de agentes não funcionais para evitar padrões problemáticos.
+        Inclui erros brutos do meta-agente para melhor aprendizado.
         """
         if not self.agent_history:
             return "Nenhum histórico disponível."
         
-        # Filtrar agentes com baixa performance (< 30% acurácia)
-        non_functional_agents = [
-            agent for agent in self.agent_history 
-            if agent.get("performance", {}).get("accuracy", 0) < 30
-        ]
+        # Filtrar agentes com baixa performance (< 30% acurácia) OU com erros de execução
+        non_functional_agents = []
+        for agent in self.agent_history:
+            accuracy = agent.get("performance", {}).get("accuracy", 0)
+            detailed_results = agent.get("detailed_results", [])
+            has_execution_error = (detailed_results and len(detailed_results) > 0 and 
+                                 "raw_error_details" in detailed_results[0])
+            
+            if accuracy < 30 or has_execution_error:
+                non_functional_agents.append(agent)
         
         if not non_functional_agents:
             return "Nenhum exemplo de baixa performance encontrado."
@@ -167,14 +182,32 @@ RESPONDA EXCLUSIVAMENTE EM JSON com esta estrutura:
         # Pegar até max_n exemplos
         selected_agents = non_functional_agents[:max_n]
         
-        # Formatar exemplos com tipos de erro comuns
+        # Formatar exemplos com erros brutos quando disponíveis
         examples = []
         for agent in selected_agents:
             error_type = self._identify_error_type(agent)
+            
+            # Verificar se há erro bruto disponível
+            error_details = ""
+            detailed_results = agent.get("detailed_results", [])
+            if detailed_results and len(detailed_results) > 0 and "raw_error_details" in detailed_results[0]:
+                error_info = detailed_results[0]["raw_error_details"]
+                error_details = f"""
+
+**CÓDIGO PROBLEMÁTICO GERADO PELO META-AGENTE:**
+```python
+{error_info["problematic_code"]}
+```
+
+**ERRO BRUTO QUE ACONTECEU:**
+```
+{error_info["error_message"]}
+```"""
+            
             example = f"""
 ## {agent['name']} (ID: {agent['agent_id']}) - PROBLEMÁTICO
 **Performance:** Acurácia: {agent['performance']['accuracy']:.1f}%
-**Tipo de Erro:** {error_type}
+**Tipo de Erro:** {error_type}{error_details}
 **Problema Identificado:** {agent['thinking']}
 **Configuração que NÃO funcionou:** {json.dumps(agent['config'], indent=2, ensure_ascii=False)}
 """
@@ -317,18 +350,22 @@ CRIE UM PIPELINE REVOLUCIONÁRIO!"""
                 "code": f"# Erro na geração: {str(e)}"
             }
     
-    def test_agent_pipeline(self, agent_code: str, agent_name: str, runs: int = 5) -> Dict[str, Any]:
+    def test_agent_pipeline(self, agent_code: str, agent_name: str, runs: int = None) -> Dict[str, Any]:
         """
         FUNÇÃO ÚNICA para testar pipelines de agentes com logs detalhados.
         
         Args:
             agent_code: Código Python do pipeline
             agent_name: Nome do agente/pipeline
-            runs: Número de execuções para teste
+            runs: Número de execuções para teste (usa DEFAULT_TEST_RUNS se None)
             
         Returns:
             Dict com resultados consolidados e estatísticas
         """
+        # Usar valor padrão se não especificado
+        if runs is None:
+            runs = self.DEFAULT_TEST_RUNS
+        
         def log_step(step: str, details: str = ""):
             """Log detalhado com timestamp."""
             timestamp = datetime.now().strftime("%H:%M:%S")
@@ -379,7 +416,12 @@ CRIE UM PIPELINE REVOLUCIONÁRIO!"""
                 "name": agent_name,
                 "accuracy": 0.0,
                 "avg_execution_time": 0.0,
-                "error": f"Erro ao executar código: {str(e)}"
+                "error": f"Erro ao executar código: {str(e)}",
+                "raw_error_details": {
+                    "error_message": str(e),
+                    "problematic_code": agent_code,
+                    "error_type": type(e).__name__
+                }
             }
         
         # EXECUTAR MÚLTIPLAS VEZES PARA MÉTRICAS CONFIÁVEIS
@@ -573,8 +615,7 @@ CRIE UM PIPELINE REVOLUCIONÁRIO!"""
         print("🧪 Testando agente...")
         test_results = self.test_agent_pipeline(
             agent_code=agent_spec['code'],
-            agent_name=agent_spec['name'],
-            runs=5
+            agent_name=agent_spec['name']
         )
         
         # Adicionar ao histórico usando função centralizada

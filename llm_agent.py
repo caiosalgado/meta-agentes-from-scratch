@@ -61,60 +61,60 @@ class LLM_Agent:
                 for key, value in resposta.items():
                     info_section += f"## {key.title()} do Agente {agent_id}:\n{value}\n\n"
         
-        # system_prompt = (
-        #     "Você é um {role}.\n\n"
-        #     "Responda exatamente no formato JSON abaixo:\n"
-        #     "{json_string}\n"
-        #     "NAO ESQUEÇA NENHUM CAMPO!\n\n"
-        # ).format(
-        #     role=self.role,
-        #     json_string=json.dumps(self.arquitetura_resposta, indent=2, ensure_ascii=False)
-        # )
-        system_prompt = ("""
-Você é um {role}.
+        system_prompt = (
+            "Você é um {role}.\n\n"
+            "Responda exatamente no formato JSON abaixo:\n"
+            "{json_string}\n"
+            "NAO ESQUEÇA NENHUM CAMPO!\n\n"
+        ).format(
+            role=self.role,
+            json_string=json.dumps(self.arquitetura_resposta, indent=2, ensure_ascii=False)
+        )
+#         system_prompt = ("""
+# Você é um {role}.
 
-**FORMATO OBRIGATÓRIO DA RESPOSTA**
-- Responda **somente** com um objeto JSON válido (sem markdown, sem comentários, sem texto fora das chaves).
-- O objeto deve conter **exatamente** as chaves listadas abaixo, nesta ordem:
+# **FORMATO OBRIGATÓRIO DA RESPOSTA**
+# - Responda **somente** com um objeto JSON válido (sem markdown, sem comentários, sem texto fora das chaves).
+# - O objeto deve conter **exatamente** as chaves listadas abaixo, nesta ordem:
 
-{json_string}
+# {json_string}
 
-**REGRAS PARA O CAMPO "code"**
-1. O script deve compilar em Python 3.11 sem dependências externas.
-2. Inclua todos os imports necessários (ex.: `from typing import List, Dict`).
-3. Defina a função **`solve_problem(problem_data)`** que retorna um dicionário **`{"code": "...python..."}`**.
-4. Para qualquer string multi-linha dentro do código (prompts, f-strings, etc.) escolha *uma* das duas opções:
-   • Use aspas triplas:  
-     ```python
-     instruction = f'''Implemente solução:
-Análise: {{analysis["analysis"]}}
+# **REGRAS PARA O CAMPO "code"**
+# 1. O script deve compilar em Python 3.11 sem dependências externas.
+# 2. Inclua todos os imports necessários (ex.: `from typing import List, Dict`).
+# 3. Defina a função **`solve_problem(problem_data)`** que retorna um dicionário **`{"code": "...python..."}`**.
+# 4. Para qualquer string multi-linha dentro do código (prompts, f-strings, etc.) escolha *uma* das duas opções:
+#    • Use aspas triplas:  
+#      ```python
+#      instruction = f'''Implemente solução:
+# Análise: {{analysis["analysis"]}}
 
-Requisitos: código limpo
-'''
-     ```
-   • Ou mantenha tudo em uma linha usando `\\n`:  
-     ```python
-     instruction = (
-         f"Implemente solução:\\n"
-         f"Análise: {{analysis['analysis']}}\\n"
-         "Requisitos: código limpo"
-     )
-     ```
-   **Nunca** quebre a linha logo após abrir `"` em f-strings.
-5. Não inclua blocos markdown (```python) ou texto fora do JSON.
-6. Escape `\\`, `"` e quebras de linha (`\\n`) para manter o JSON válido.
+# Requisitos: código limpo
+# '''
+#      ```
+#    • Ou mantenha tudo em uma linha usando `\\n`:  
+#      ```python
+#      instruction = (
+#          f"Implemente solução:\\n"
+#          f"Análise: {{analysis['analysis']}}\\n"
+#          "Requisitos: código limpo"
+#      )
+#      ```
+#    **Nunca** quebre a linha logo após abrir `"` em f-strings.
+# 5. Não inclua blocos markdown (```python) ou texto fora do JSON.
+# 6. Escape `\\`, `"` e quebras de linha (`\\n`) para manter o JSON válido.
 
-**EXEMPLO MÍNIMO VÁLIDO**
+# **EXEMPLO MÍNIMO VÁLIDO**
 
-{
-  "name": "Simple Example",
-  "pensamento": "Demonstra formato correto.",
-  "code": "print(\\\"hello\\\")\\n"
-}
-""").format(
-    role=self.role,
-    json_string=json.dumps(self.arquitetura_resposta, indent=2, ensure_ascii=False)
-)
+# {
+#   "name": "Simple Example",
+#   "pensamento": "Demonstra formato correto.",
+#   "code": "print(\\\"hello\\\")\\n"
+# }
+# """).format(
+#     role=self.role,
+#     json_string=json.dumps(self.arquitetura_resposta, indent=2, ensure_ascii=False)
+# )
         
         user_prompt = (
             "# Sua Tarefa\n"

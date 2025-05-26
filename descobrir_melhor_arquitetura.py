@@ -2,7 +2,7 @@
 from llm_meta_agent import LLM_Meta_Agent
 
 def main():
-    TENTATIVAS = 100
+    TENTATIVAS = 10000
 
     meta_agent = LLM_Meta_Agent(model="ollama:qwen3:32b", temperatura=0.6)
     

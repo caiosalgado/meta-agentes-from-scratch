@@ -37,44 +37,123 @@ class LLM_Meta_Agent:
 #   "pensamento": "Por que esta arquitetura vai funcionar melhor...", 
 #   "code": "Código Python executável que cria e orquestra os agentes"
 # }"""
+    SYSTEM_PROMPT = """Você é um especialista em engenharia de agentes de IA.
 
-    SYSTEM_PROMPT = """
-Você é um especialista em engenharia de agentes de IA.
+----------------------------------------------------------------
+1. FORMATO OBRIGATÓRIO DA RESPOSTA
+----------------------------------------------------------------
+- Responda **EXCLUSIVAMENTE** com um objeto JSON válido:
+  - **Sem** markdown, comentários ou texto fora das chaves.
+  - **Sem** vírgulas finais, sem campos extras.
+- O objeto deve conter **exatamente** estas chaves, nesta ordem:
 
-**FORMATO OBRIGATÓRIO DA RESPOSTA**
-- Responda **somente** com um objeto JSON válido (sem markdown, sem comentários, sem texto fora das chaves).
-- O objeto deve ter exatamente estas chaves, nesta ordem:
+  {
+    "name":       "string",
+    "pensamento": "string",
+    "code":       "string"
+  }
+
+----------------------------------------------------------------
+2. REGRAS PARA O CAMPO `"code"`
+----------------------------------------------------------------
+1. Deve compilar em **Python 3.11** sem dependências externas.  
+2. Inclua **todos** os imports necessários:  
+   `from typing import List, Dict, Optional, Any`  
+3. Defina a função `solve_problem(problem_data)` que **sempre** retorna  
+   `{"code": "...python..."}`.  
+4. Não inclua blocos markdown (```python), nem texto extra.  
+5. Escape **sempre**:
+   - Quebras de linha com `\\n`
+   - Aspas internas com `\\\"`
+   - Barras invertidas com `\\\\`
+
+----------------------------------------------------------------
+3. REFERÊNCIA RÁPIDA — Classe LLM_Agent e chaining
+----------------------------------------------------------------
+```python
+class LLM_Agent:
+    def __init__(
+        self,
+        role: str,
+        instruction: str,
+        arquitetura_resposta: Dict[str,str],
+        temperatura: float = 0.7,
+        arquitetura_respostas_anteriores: Optional[List[Dict[str,str]]] = None,
+        model: str = "ollama:qwen3:4b"
+    ): ...
+    def generate_response(self, input_dict: Dict[str,Any]) -> Dict[str,Any]: ...
+
+Uso básico:
+
+agent = LLM_Agent(
+    role="Role Name",
+    instruction="Some instruction",
+    arquitetura_resposta={"code":"string"},
+    temperatura=0.2,
+    arquitetura_respostas_anteriores=[prev_out],
+    model="ollama:qwen3:32b"
+)
+out = agent.generate_response(problem_data)
+# out terá exatamente {'code': '...'}
+
+Encadeamento:
+
+# 1) Extrai edge cases
+analyzer = LLM_Agent(..., arquitetura_resposta={"edge_cases":"list"}, ...)
+analysis = analyzer.generate_response(problem_data)
+
+# 2) Gera código
+coder = LLM_Agent(
+    ..., 
+    arquitetura_resposta={"code":"string"},
+    arquitetura_respostas_anteriores=[analysis],
+    ...
+)
+result = coder.generate_response(problem_data)
+
+
+⸻
+
+	4.	STRINGS MULTI-LINHA NO instruction
+
+⸻
+
+	•	Errado (gera SyntaxError):
+
+instruction = f"Forneça análise:\n
+1. Tipo de problema\n
+2. Restrições"
+
+
+	•	Certo (parênteses + \n explícito):
+
+instruction = (
+    "Forneça análise:\n"
+    "1. Tipo de problema\n"
+    "2. Restrições\n"
+    "3. Casos de borda\n"
+)
+
+
+	•	Certo (aspas triplas):
+
+instruction = f'''Forneça análise:
+1. Tipo de problema
+2. Restrições
+3. Casos de borda
+'''
+
+
+⸻
+
+	5.	EXEMPLO COMPLETO DE SAÍDA
 
 {
-  "name":        <string>,
-  "pensamento":  <string>,
-  "code":        <string Python compilável>
+  "name": "Edge Case Aware Generator",
+  "pensamento": "Pipeline em duas etapas: extrai edge cases e depois gera código robusto, garantindo contexto via chaining.",
+  "code": "from typing import List, Dict, Any\\nfrom llm_agent import LLM_Agent\\n\\ndef solve_problem(problem_data: Dict[str,Any]) -> Dict[str,Any]:\\n    analyzer = LLM_Agent(\\n        role=\\\"Edge Case Extractor\\\",\\n        instruction=(\\\"Liste até 5 edge cases críticos.\\\"),\\n        arquitetura_resposta={\\\"edge_cases\\\":\\\"list\\\"},\\n        temperatura=0.5,\\n        model=\\\"ollama:gemma3:4b\\\"\\n    )\\n    analysis = analyzer.generate_response(problem_data)\\n\\n    coder = LLM_Agent(\\n        role=\\\"Code Generator\\\",\\n        instruction=(\\\"Escreva código Python tratando estes edge cases: \\\" + \", \".join(analysis[\\\"edge_cases\\\"])),\\n        arquitetura_resposta={\\\"code\\\":\\\"string\\\"},\\n        temperatura=0.2,\\n        arquitetura_respostas_anteriores=[analysis],\\n        model=\\\"ollama:qwen3:32b\\\"\\n    )\\n    result = coder.generate_response(problem_data)\\n    return {\\\"code\\\": result[\\\"code\\\"]}\\n"
 }
 
-**REGRAS PARA O CAMPO "code"**
-1. O script deve compilar em Python 3.11 sem dependências externas.
-2. Inclua todos os `import` necessários (ex.: `from typing import List, Dict`).
-3. Defina a função **`solve_problem(problem_data)`** que retorna **`{"code": "...python..."}`**.
-4. Para **qualquer string multi-linha** dentro do código (prompts, f-strings, etc.) escolha *uma* das opções:
-   - Use aspas triplas:  
-     ```python
-     instruction = f'''Implemente solução:
-Análise: {analysis["analysis"]}
-
-Requisitos: código limpo
-'''
-     ```
-   - Ou mantenha em uma só linha e insira `\\n`:  
-     ```python
-     instruction = (
-         f"Implemente solução:\\n"
-         f"Análise: {analysis['analysis']}\\n"
-         "Requisitos: código limpo"
-     )
-     ```
-   **Nunca** quebre a linha logo depois de abrir `"`.
-5. Não inclua blocos markdown (```python) dentro da string JSON.
-6. Escape \\, " e quebras de linha (\n) para manter o JSON válido.
 """
 
     def __init__(self, 
@@ -104,9 +183,9 @@ Requisitos: código limpo
             "ollama:qwen3:1.7b",
             "ollama:qwen3:4b", 
             "ollama:qwen3:14b", 
-            # "ollama:qwen3:30b", 
-            # "ollama:qwen3:32b",
-            # "ollama:devstral",
+            "ollama:qwen3:30b", 
+            "ollama:qwen3:32b",
+            "ollama:devstral",
             "ollama:deepseek-r1:1.5b",
             "ollama:deepseek-r1:8b",
             "ollama:deepseek-r1:14b"
@@ -422,11 +501,19 @@ Requisitos: código limpo
 {error_info["error_message"]}
 ```"""
             
+            # CORREÇÃO: Compatibilidade com diferentes estruturas de histórico
+            # Tentar pegar thinking de diferentes locais
+            thinking = (
+                agent.get('thinking') or  # Estrutura antiga
+                agent.get('config', {}).get('description') or  # Estrutura nova
+                "Descrição não disponível"
+            )
+            
             example = f"""
 ## {agent['name']} (ID: {agent['agent_id']}) - PROBLEMÁTICO
 **Performance:** Acurácia: {agent['performance']['accuracy']:.1f}%
 **Tipo de Erro:** {error_type}{error_details}{raw_error_details}
-**Problema Identificado:** {agent['thinking']}
+**Problema Identificado:** {thinking}
 **Configuração que NÃO funcionou:** {json.dumps(agent['config'], indent=2, ensure_ascii=False)}
 """
             examples.append(example)

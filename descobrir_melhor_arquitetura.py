@@ -10,11 +10,16 @@ def main():
     
     for i in range(TENTATIVAS):
         print(f"Tentativa {i+1}/{TENTATIVAS}")
-        result = meta_agent.create_and_evaluate_agent(tarefa)
-        if result["success"]:
-            print(f"✅ {result['agent']['name']}: {result['performance']['accuracy']:.1f}% - {result['performance']['avg_execution_time']:.1f}s")
-        else:
-            print(f"❌ Falhou: {result['error']}")
+        try:
+            result = meta_agent.create_and_evaluate_agent(tarefa)
+            if result["success"]:
+                print(f"✅ {result['agent']['name']}: {result['performance']['accuracy']:.1f}% - {result['performance']['avg_execution_time']:.1f}s")
+            else:
+                print(f"❌ Falhou: {result['error']}")
+        except Exception as e:
+            print(f"⚠️ Erro na tentativa {i+1}: {str(e)}")
+            print("🔄 Continuando para próxima tentativa...")
+            continue
 
 if __name__ == "__main__":
     main()

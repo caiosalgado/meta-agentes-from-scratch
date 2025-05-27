@@ -178,7 +178,7 @@ instruction = f'''Forneça análise:
             "ollama:phi4:latest", 
             "ollama:gemma3:4b", 
             "ollama:gemma3:12b", 
-            # "ollama:gemma3:27b", 
+            "ollama:gemma3:27b", 
             "ollama:gemma3:1b",
             "ollama:qwen3:1.7b",
             "ollama:qwen3:4b", 
@@ -364,10 +364,18 @@ instruction = f'''Forneça análise:
         # Formatar exemplos
         examples = []
         for agent in top_agents:
+            # CORREÇÃO: Compatibilidade com diferentes estruturas de histórico
+            # Tentar pegar thinking de diferentes locais
+            thinking = (
+                agent.get('thinking') or  # Estrutura antiga
+                agent.get('config', {}).get('description') or  # Estrutura nova
+                "Descrição não disponível"
+            )
+            
             example = f"""
 ## {agent['name']} (ID: {agent['agent_id']})
 **Performance:** Acurácia: {agent['performance']['accuracy']:.1f}%, Tempo: {agent['performance']['avg_execution_time']:.2f}s
-**Pensamento:** {agent['thinking']}
+**Pensamento:** {thinking}
 **Configuração:** {json.dumps(agent['config'], indent=2, ensure_ascii=False)}
 """
             examples.append(example)
